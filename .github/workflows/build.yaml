@@ -31,4 +31,6 @@ jobs:
           ${{ runner.os }}-go-
 
     - name: Build
-      run: docker run --rm -v $(pwd):/plugin-source tykio/tyk-plugin-compiler:v4.0.3 my-post-plugin.so
+      run: |
+        go build -buildmode=plugin .
+        docker run --rm -v $(pwd):/plugin-source tykio/tyk-plugin-compiler:v4.0.3 my-post-plugin.so
