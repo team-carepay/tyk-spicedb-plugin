@@ -1,0 +1,350 @@
+syntax = "proto3";
+package authzed.api.v1;
+
+option go_package = "github.com/authzed/authzed-go/proto/authzed/api/v1";
+option java_package = "com.authzed.api.v1";
+
+// Relationship specifies how a resource relates to a subject. Relationships
+// form the data for the graph over which all permissions questions are
+// answered.
+message Relationship {
+  // resource is the resource to which the subject is related, in some manner
+  ObjectReference resource = 1;
+
+  // relation is how the resource and subject are related.
+  string relation = 2;
+
+  // subject is the subject to which the resource is related, in some manner.
+  SubjectReference subject = 3;
+}
+
+// SubjectReference is used for referring to the subject portion of a
+// Relationship. The relation component is optional and is used for defining a
+// sub-relation on the subject, e.g. group:123#members
+message SubjectReference {
+  ObjectReference object = 1;
+  string optional_relation = 2;
+}
+
+// ObjectReference is used to refer to a specific object in the system.
+message ObjectReference {
+  string object_type = 1;
+  string object_id = 2;
+}
+
+// ZedToken is used to provide causality metadata between Write and Check
+// requests.
+//
+// See the authzed.api.v1.Consistency message for more information.
+message ZedToken {
+  string token = 1;
+}
+
+// RelationshipUpdate is used for mutating a single relationship within the
+// service.
+//
+// CREATE will create the relationship only if it doesn't exist, and error
+// otherwise.
+//
+// TOUCH will upsert the relationship, and will not error if it
+// already exists.
+//
+// DELETE will delete the relationship and error if it doesn't
+// exist.
+message RelationshipUpdate {
+  enum Operation {
+    OPERATION_UNSPECIFIED = 0;
+    OPERATION_CREATE = 1;
+    OPERATION_TOUCH = 2;
+    OPERATION_DELETE = 3;
+  }
+  Operation operation = 1;
+  Relationship relationship = 2;
+}
+
+// PermissionRelationshipTree is used for representing a tree of a resource and
+// its permission relationships with other objects.
+message PermissionRelationshipTree {
+  oneof tree_type {
+    AlgebraicSubjectSet intermediate = 1;
+    DirectSubjectSet leaf = 2;
+  }
+  ObjectReference expanded_object = 3;
+  string expanded_relation = 4;
+}
+
+// AlgebraicSubjectSet is a subject set which is computed based on applying the
+// specified operation to the operands according to the algebra of sets.
+//
+// UNION is a logical set containing the subject members from all operands.
+//
+// INTERSECTION is a logical set containing only the subject members which are
+// present in all operands.
+//
+// EXCLUSION is a logical set containing only the subject members which are
+// present in the first operand, and none of the other operands.
+message AlgebraicSubjectSet {
+  enum Operation {
+    OPERATION_UNSPECIFIED = 0;
+    OPERATION_UNION = 1;
+    OPERATION_INTERSECTION = 2;
+    OPERATION_EXCLUSION = 3;
+  }
+
+  Operation operation = 1;
+  repeated PermissionRelationshipTree children = 2;
+}
+
+// DirectSubjectSet is a subject set which is simply a collection of subjects.
+message DirectSubjectSet { repeated SubjectReference subjects = 1; }
+
+// PermissionsService implements a set of RPCs that perform operations on
+// relationships and permissions.
+service PermissionsService {
+  // ReadRelationships reads a set of the relationships matching one or more
+  // filters.
+  rpc ReadRelationships(ReadRelationshipsRequest)
+      returns (stream ReadRelationshipsResponse) {
+  }
+
+  // WriteRelationships atomically writes and/or deletes a set of specified
+  // relationships. An optional set of preconditions can be provided that must
+  // be satisfied for the operation to commit.
+  rpc WriteRelationships(WriteRelationshipsRequest)
+      returns (WriteRelationshipsResponse) {
+  }
+
+  // DeleteRelationships atomically bulk deletes all relationships matching the
+  // provided filter. If no relationships match, none will be deleted and the
+  // operation will succeed. An optional set of preconditions can be provided that must
+  // be satisfied for the operation to commit.
+  rpc DeleteRelationships(DeleteRelationshipsRequest)
+      returns (DeleteRelationshipsResponse) {
+  }
+
+  // CheckPermission determines for a given resource whether a subject computes
+  // to having a permission or is a direct member of a particular relation.
+  rpc CheckPermission(CheckPermissionRequest)
+      returns (CheckPermissionResponse) {
+  }
+
+  // ExpandPermissionTree reveals the graph structure for a resource's
+  // permission or relation. This RPC does not recurse infinitely deep and may
+  // require multiple calls to fully unnest a deeply nested graph.
+  rpc ExpandPermissionTree(ExpandPermissionTreeRequest)
+      returns (ExpandPermissionTreeResponse) {
+  }
+
+  // LookupResources returns all the resources of a given type that a subject
+  // can access whether via a computed permission or relation membership.
+  rpc LookupResources(LookupResourcesRequest)
+      returns (stream LookupResourcesResponse) {
+  }
+}
+
+// Consistency will define how a request is handled by the backend.
+// By defining a consistency requirement, and a token at which those
+// requirements should be applied, where applicable.
+message Consistency {
+  oneof requirement {
+    // minimize_latency indicates that the latency for the call should be
+    // minimized by having the system select the fastest snapshot available.
+    bool minimize_latency = 1;
+
+    // at_least_as_fresh indicates that all data used in the API call must be
+    // *at least as fresh* as that found in the ZedToken; more recent data might
+    // be used if available or faster.
+    ZedToken at_least_as_fresh = 2;
+
+    // at_exact_snapshot indicates that all data used in the API call must be
+    // *at the given* snapshot in time; if the snapshot is no longer available,
+    // an error will be returned to the caller.
+    ZedToken at_exact_snapshot = 3;
+
+    // fully_consistent indicates that all data used in the API call *must* be
+    // at the most recent snapshot found.
+    //
+    // NOTE: using this method can be *quite slow*, so unless there is a need to
+    // do so, it is recommended to use `at_least_as_fresh` with a stored
+    // ZedToken.
+    bool fully_consistent = 4;
+  }
+}
+
+// RelationshipFilter is a collection of filters which when applied to a
+// relationship will return relationships that have exactly matching fields.
+//
+// resource_type is required. All other fields are optional and if left
+// unspecified will not filter relationships.
+message RelationshipFilter {
+  string resource_type = 1;
+
+  string optional_resource_id = 2;
+
+  string optional_relation = 3;
+
+  SubjectFilter optional_subject_filter = 4;
+}
+
+// SubjectFilter specifies a filter on the subject of a relationship.
+//
+// subject_type is required and all other fields are optional, and will not
+// impose any additional requirements if left unspecified.
+message SubjectFilter {
+  message RelationFilter {
+    string relation = 1;
+  }
+
+  string subject_type = 1;
+
+  string optional_subject_id = 2;
+
+  RelationFilter optional_relation = 3;
+}
+
+// ReadRelationshipsRequest specifies one or more filters used to read matching
+// relationships within the system.
+message ReadRelationshipsRequest {
+  Consistency consistency = 1;
+  RelationshipFilter relationship_filter = 2;
+}
+
+// ReadRelationshipsResponse contains a Relationship found that matches the
+// specified relationship filter(s). A instance of this response message will
+// be streamed to the client for each relationship found.
+message ReadRelationshipsResponse {
+  ZedToken read_at = 1;
+  Relationship relationship = 2;
+}
+
+// Precondition specifies how and the existence or absence of certain
+// relationships as expressed through the accompanying filter should affect
+// whether or not the operation proceeds.
+//
+// MUST_NOT_MATCH will fail the parent request if any relationships match the
+// relationships filter.
+// MUST_MATCH will fail the parent request if there are no
+// relationships that match the filter.
+message Precondition {
+  enum Operation {
+    OPERATION_UNSPECIFIED = 0;
+    OPERATION_MUST_NOT_MATCH = 1;
+    OPERATION_MUST_MATCH = 2;
+  }
+
+  Operation operation = 1;
+  RelationshipFilter filter = 2;
+}
+
+// WriteRelationshipsRequest contains a list of Relationship mutations that
+// should be applied to the service. If the optional_preconditions parameter
+// is included, all of the specified preconditions must also be satisfied before
+// the write will be committed.
+message WriteRelationshipsRequest {
+  repeated RelationshipUpdate updates = 1;
+
+  repeated Precondition optional_preconditions = 2; // To be bounded by configuration
+}
+
+message WriteRelationshipsResponse { ZedToken written_at = 1; }
+
+// DeleteRelationshipsRequest specifies which Relationships should be deleted,
+// requesting the delete of *ALL* relationships that match the specified
+// filters. If the optional_preconditions parameter is included, all of the
+// specified preconditions must also be satisfied before the delete will be
+// executed.
+message DeleteRelationshipsRequest {
+  RelationshipFilter relationship_filter = 1;
+
+  repeated Precondition optional_preconditions = 2; // To be bounded by configuration
+}
+
+message DeleteRelationshipsResponse { ZedToken deleted_at = 1; }
+
+// CheckPermissionRequest issues a check on whether a subject has a permission
+// or is a member of a relation, on a specific resource.
+message CheckPermissionRequest {
+  Consistency consistency = 1;
+
+  // resource is the resource on which to check the permission or relation.
+  ObjectReference resource = 2 ;
+
+  // permission is the name of the permission (or relation) on which to execute
+  // the check.
+  string permission = 3;
+
+  // subject is the subject that will be checked for the permission or relation.
+  SubjectReference subject = 4;
+}
+
+message CheckPermissionResponse {
+  enum Permissionship {
+    PERMISSIONSHIP_UNSPECIFIED = 0;
+    PERMISSIONSHIP_NO_PERMISSION = 1;
+    PERMISSIONSHIP_HAS_PERMISSION = 2;
+  }
+
+  ZedToken checked_at = 1;
+
+  // Permissionship communicates whether or not the subject has the requested
+  // permission or has a relationship with the given resource, over the given
+  // relation.
+  //
+  // This value will be authzed.api.v1.PERMISSIONSHIP_HAS_PERMISSION if the
+  // requested subject is a member of the computed permission set or there
+  // exists a relationship with the requested relation from the given resource
+  // to the given subject.
+  Permissionship permissionship = 2;
+}
+
+// ExpandPermissionTreeRequest returns a tree representing the expansion of all
+// relationships found accessible from a permission or relation on a particular
+// resource.
+//
+// ExpandPermissionTreeRequest is typically used to determine the full set of
+// subjects with a permission, along with the relationships that grant said
+// access.
+message ExpandPermissionTreeRequest {
+  Consistency consistency = 1;
+
+  // resource is the resource over which to run the expansion.
+  ObjectReference resource = 2;
+
+  // permission is the name of the permission or relation over which to run the
+  // expansion for the resource.
+  string permission = 3;
+}
+
+message ExpandPermissionTreeResponse {
+  ZedToken expanded_at = 1;
+
+  // tree_root is a tree structure whose leaf nodes are subjects, and
+  // intermediate nodes represent the various operations (union, intersection,
+  // exclusion) to reach those subjects.
+  PermissionRelationshipTree tree_root = 2;
+}
+
+// LookupResourcesRequest performs a lookup of all resources of a particular
+// kind on which the subject has the specified permission or the relation in
+// which the subject exists, streaming back the IDs of those resources.
+message LookupResourcesRequest {
+  Consistency consistency = 1;
+
+  // resource_object_type is the type of resource object for which the IDs will
+  // be returned.
+  string resource_object_type = 2;
+
+  // permission is the name of the permission or relation for which the subject
+  // must Check.
+  string permission = 3;
+
+  // subject is the subject with access to the resources.
+  SubjectReference subject = 4;
+}
+
+// LookupResourcesResponse contains a single matching resource object ID for the
+// requested object type, permission, and subject.
+message LookupResourcesResponse {
+  ZedToken looked_up_at = 1;
+  string resource_object_id = 2;
+}

@@ -5,11 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	tykctx "github.com/TykTechnologies/tyk/ctx"
-	authzedpb "github.com/authzed/authzed-go/proto/authzed/api/v1"
-	"github.com/authzed/authzed-go/v1"
-	"github.com/authzed/grpcutil"
-	"log"
+	"github.com/TykTechnologies/tyk/log"
 	"net/http"
 	"os"
 	"strings"
@@ -23,53 +19,93 @@ type parameter struct {
 	Permission string `json:"permission"`
 }
 
-var spiceDbClient *authzed.Client
+var spiceDbClient *Client
+var logger = log.Get()
+var rootNode *OpenApiNode
 
 func init() {
+	logger.Info("Initializing SpiceDB Plugin")
 	endpoint := os.Getenv("AUTHZED_ENDPOINT")
 	bearerToken := os.Getenv("AUTHZED_BEARER_TOKEN")
-	client, err := authzed.NewClient(
+	client, err := NewClient(
 		endpoint,
-		grpcutil.WithSystemCerts(grpcutil.SkipVerifyCA),
-		grpcutil.WithBearerToken(bearerToken),
+		WithInsecure(),
+		WithInsecureBearerToken(bearerToken),
 	)
 	if err != nil {
-		log.Fatalf("unable to initialize client: %s", err)
+		logger.Errorf("unable to initialize client: %s", err)
 	}
 	spiceDbClient = client
+	logger.Infof("SpiceDB Plugin initialized, endpoint: %s, token: %s", endpoint, bearerToken)
+	rootNode, err = ReadSpecs("/mnt/tyk-gateway/apps")
+	if err != nil {
+		logger.Errorf("unable to read specs: %s", err)
+	}
 }
 
 func ProcessSecureRequest(rw http.ResponseWriter, r *http.Request) {
-	apiDefinition := tykctx.GetDefinition(r)
-	secureParams, found := apiDefinition.ConfigData["secureParameters"].([]parameter)
-	if found && len(secureParams) > 0 {
+	logger.
+		WithField("url", r.URL.Path).
+		WithField("method", r.Method).
+		Info("Finding matching path")
+	node, pathParams, found := FindEntry(rootNode, strings.ToLower(r.Method)+r.URL.Path)
+	if found && len(node.Parameters) > 0 {
 		userId, err := extractUserIdFromJwt(r)
 		if err != nil {
-			rw.WriteHeader(401)
+			logger.
+				WithField("url", r.URL.Path).
+				WithField("method", r.Method).
+				WithField("error", err).
+				Error("unable to extract user id from jwt")
+			rw.WriteHeader(401) // TODO: allow anonymous endpoints (permitall)
 			return
 		}
-		subject := &authzedpb.SubjectReference{Object: &authzedpb.ObjectReference{ObjectType: "user", ObjectId: userId}}
-		pathParts := strings.Split(r.URL.Path, "/")
-		for _, param := range secureParams {
-			var value string
-			if param.In == "path" {
-				value = pathParts[param.Index]
-			} else if param.In == "query" {
-				value = r.Form.Get(param.Name)
-			} else if param.In == "request" {
-				value = r.PostForm.Get(param.Name)
+		subject := &SubjectReference{Object: &ObjectReference{ObjectType: "user", ObjectId: userId}}
+		for name, param := range node.Parameters {
+			var values []string
+			if param.In == "path" { // /programs/{programId}/users/{userId}
+				values = []string{pathParams[name]}
+			} else if param.In == "query" { // /programs?payerId=123
+				values = r.URL.Query()[name]
+				logger.Info("query value is '", values, "' for ", name)
+			} else if param.In == "request" { // /programs   body: payerId=123&name=AAR&description=blabla
+				// TODO: suppoort JSON body
+				if r.PostForm == nil {
+					r.ParseMultipartForm(32 << 20)
+				}
+				values = r.PostForm[name]
 			}
-			resource := &authzedpb.ObjectReference{ObjectType: param.Type, ObjectId: value}
-			resp, err2 := spiceDbClient.CheckPermission(r.Context(), &authzedpb.CheckPermissionRequest{
-				Resource:   resource,
-				Permission: param.Permission,
-				Subject:    subject,
-			})
+			for _, value := range values {
+				resource := &ObjectReference{ObjectType: param.Type, ObjectId: value}
+				requestLog := logger.
+					WithField("url", r.URL.Path).
+					WithField("method", r.Method).
+					WithField("parameter", name).
+					WithField("in", param.In).
+					WithField("user-id", userId).
+					WithField("permission", param.Permission).
+					WithField("resource-type", param.Type).
+					WithField("resource-id", value)
+				resp, err2 := spiceDbClient.CheckPermission(r.Context(), &CheckPermissionRequest{
+					Resource:   resource,
+					Permission: param.Permission,
+					Subject:    subject,
+				})
 
-			if err2 != nil || resp.Permissionship != authzedpb.CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION {
-				rw.WriteHeader(403)
+				if err2 != nil || resp.Permissionship != CheckPermissionResponse_PERMISSIONSHIP_HAS_PERMISSION {
+					requestLog.Error("Permission denied")
+					rw.WriteHeader(403)
+					return
+				} else {
+					requestLog.Info("Permission granted")
+				}
 			}
 		}
+	} else {
+		logger.
+			WithField("url", r.URL.Path).
+			WithField("method", r.Method).
+			Info("No secure parameters found")
 	}
 }
 
