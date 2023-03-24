@@ -1,0 +1,5628 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "User Management API",
+    "description": "The vision of this module is to facilitate the creation of users, assigning and management of the user permissions and roles which control access to the platform.",
+    "version": "3.1.5"
+  },
+  "servers": [
+    {
+      "url": "https://api.ke-test.carepay.dev/api/usermanagement",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "Authentication": []
+    }
+  ],
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get User",
+        "description": "Permission(s) needed: USER_GRANT_VIEW",
+        "operationId": "getUser",
+        "x-security": {
+          "roles": [ "PAYER", "PROVIDER", "ACCOUNTHOLDER" ],
+          "parameters": [
+            {
+              "name":  "userId",
+              "in": "path",
+              "resource": "user",
+              "permission": "view"
+            }
+          ]
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_DetailView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Update User",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "x-type": "user",
+            "x-permission": "view",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Delete User",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "deleteUser",
+        "x-roles": [
+          "ADMIN",
+          "RECEPTIONIST"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "x-type": "user",
+            "x-permission": "manage",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/roles/{roleId}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get User",
+        "description": "Permission(s) needed: USER_GRANT_VIEW",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_DetailView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/roles": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Assign Roles To User",
+        "description": "Permission(s) needed: CAN_MANAGE_BENEFICIARY_USER_ROLE, CAN_MANAGE_PAYER_USER_ROLE, CAN_MANAGE_AGENCY_USER_ROLE, CAN_MANAGE_CAREPAY_USER_ROLE, CAN_MANAGE_PROVIDER_USER_ROLE",
+        "operationId": "assignRolesToUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "x-type": "user",
+            "x-permission": "view",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "uniqueItems": true,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ACCOUNT_HOLDER",
+                    "PRINCIPAL",
+                    "DEPENDENT",
+                    "ENROLLEE",
+                    "MEMBER",
+                    "PARTICIPANT",
+                    "PAYER_LOANS_MANAGER",
+                    "CLAIM_AUDITOR",
+                    "PAYER_ANALYST",
+                    "PAYER_ACCOUNT_MANAGER",
+                    "PAYER_FINANCE_MANAGER",
+                    "PAYER_RULE_MANAGER",
+                    "PAYER_PROGRAM_MANAGER",
+                    "EMPLOYER",
+                    "PAYER_GENERAL_MANAGER",
+                    "PAYER_USER_MANAGER",
+                    "PAYER_ADMIN",
+                    "PAYER_UNDERWRITING_MANAGER",
+                    "PAYER_MEMBERSHIP_MANAGER",
+                    "PAYER_FINANCE_MANAGER_BASIS",
+                    "PAYER_FINANCE_MANAGER_APPROVER",
+                    "PAYER_FINANCE_MANAGER_CREATOR",
+                    "ENROLMENT_AGENT",
+                    "CASE_MANAGER",
+                    "CLAIM_MANAGER",
+                    "SENIOR_CLAIM_MANAGER",
+                    "AGENT",
+                    "AGENCY",
+                    "PAYER",
+                    "PROVIDER_PRICELIST_MANAGER",
+                    "PROVIDER_FINANCE_USER",
+                    "PROVIDER_FINANCE_MANAGER",
+                    "PROVIDER_RECEPTIONIST",
+                    "PROVIDER_CASHIER",
+                    "PROVIDER_MEDIC",
+                    "PROVIDER_USER_MANAGER",
+                    "PROVIDER_ADMIN",
+                    "PROVIDER",
+                    "PLATFORM_CLAIM_MANAGER",
+                    "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                    "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                    "PLATFORM_PROVIDER_ADMIN",
+                    "PLATFORM_PAYER_ADMIN",
+                    "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                    "PLATFORM_MEDICAL_MANAGER",
+                    "PLATFORM_ADMIN",
+                    "PLATFORM_CAREPAY_OPERATIONS",
+                    "PLATFORM_CAREPAY_ONBOARDING",
+                    "CUSTOMER_CARE_SENIOR",
+                    "CAREPAY_CUSTOMER_SERVICE",
+                    "CAREPAY",
+                    "SELF_ENROLMENT",
+                    "DATABASE_CLEANER",
+                    "VERIFIED_PROSPECT",
+                    "INTERNAL_FINANCE_ACCOUNTANT",
+                    "PARTIAL_REGISTRATION",
+                    "DATA_TRANSFER",
+                    "INTEGRATION_ENROLMENT",
+                    "INTEGRATION_ACCOUNT_MANAGER",
+                    "INTEGRATION_BENEFICIARY_MANAGER",
+                    "INTEGRATION_PROGRAM_MANAGER",
+                    "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                    "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                    "PAYER_ISIRO_MANAGER",
+                    "ACL_MANAGER",
+                    "COVER_RULES_MANAGEMENT"
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_DetailView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_BENEFICIARY_USER_ROLE",
+              "CAN_MANAGE_PAYER_USER_ROLE",
+              "CAN_MANAGE_AGENCY_USER_ROLE",
+              "CAN_MANAGE_CAREPAY_USER_ROLE",
+              "CAN_MANAGE_PROVIDER_USER_ROLE"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "PLATFORM_PAYER_SUPPORT_OPERATOR",
+              "ACCOUNT_HOLDER",
+              "PROVIDER_USER_MANAGER",
+              "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Add Roles To User",
+        "description": "Permission(s) needed: CAN_MANAGE_BENEFICIARY_USER_ROLE, CAN_MANAGE_PAYER_USER_ROLE, CAN_MANAGE_AGENCY_USER_ROLE, CAN_MANAGE_CAREPAY_USER_ROLE, CAN_MANAGE_PROVIDER_USER_ROLE",
+        "operationId": "addRolesToUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "x-type": "user",
+            "x-permission": "manage",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "uniqueItems": true,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ACCOUNT_HOLDER",
+                    "PRINCIPAL",
+                    "DEPENDENT",
+                    "ENROLLEE",
+                    "MEMBER",
+                    "PARTICIPANT",
+                    "PAYER_LOANS_MANAGER",
+                    "CLAIM_AUDITOR",
+                    "PAYER_ANALYST",
+                    "PAYER_ACCOUNT_MANAGER",
+                    "PAYER_FINANCE_MANAGER",
+                    "PAYER_RULE_MANAGER",
+                    "PAYER_PROGRAM_MANAGER",
+                    "EMPLOYER",
+                    "PAYER_GENERAL_MANAGER",
+                    "PAYER_USER_MANAGER",
+                    "PAYER_ADMIN",
+                    "PAYER_UNDERWRITING_MANAGER",
+                    "PAYER_MEMBERSHIP_MANAGER",
+                    "PAYER_FINANCE_MANAGER_BASIS",
+                    "PAYER_FINANCE_MANAGER_APPROVER",
+                    "PAYER_FINANCE_MANAGER_CREATOR",
+                    "ENROLMENT_AGENT",
+                    "CASE_MANAGER",
+                    "CLAIM_MANAGER",
+                    "SENIOR_CLAIM_MANAGER",
+                    "AGENT",
+                    "AGENCY",
+                    "PAYER",
+                    "PROVIDER_PRICELIST_MANAGER",
+                    "PROVIDER_FINANCE_USER",
+                    "PROVIDER_FINANCE_MANAGER",
+                    "PROVIDER_RECEPTIONIST",
+                    "PROVIDER_CASHIER",
+                    "PROVIDER_MEDIC",
+                    "PROVIDER_USER_MANAGER",
+                    "PROVIDER_ADMIN",
+                    "PROVIDER",
+                    "PLATFORM_CLAIM_MANAGER",
+                    "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                    "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                    "PLATFORM_PROVIDER_ADMIN",
+                    "PLATFORM_PAYER_ADMIN",
+                    "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                    "PLATFORM_MEDICAL_MANAGER",
+                    "PLATFORM_ADMIN",
+                    "PLATFORM_CAREPAY_OPERATIONS",
+                    "PLATFORM_CAREPAY_ONBOARDING",
+                    "CUSTOMER_CARE_SENIOR",
+                    "CAREPAY_CUSTOMER_SERVICE",
+                    "CAREPAY",
+                    "SELF_ENROLMENT",
+                    "DATABASE_CLEANER",
+                    "VERIFIED_PROSPECT",
+                    "INTERNAL_FINANCE_ACCOUNTANT",
+                    "PARTIAL_REGISTRATION",
+                    "DATA_TRANSFER",
+                    "INTEGRATION_ENROLMENT",
+                    "INTEGRATION_ACCOUNT_MANAGER",
+                    "INTEGRATION_BENEFICIARY_MANAGER",
+                    "INTEGRATION_PROGRAM_MANAGER",
+                    "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                    "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                    "PAYER_ISIRO_MANAGER",
+                    "ACL_MANAGER",
+                    "COVER_RULES_MANAGEMENT"
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_DetailView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_BENEFICIARY_USER_ROLE",
+              "CAN_MANAGE_PAYER_USER_ROLE",
+              "CAN_MANAGE_AGENCY_USER_ROLE",
+              "CAN_MANAGE_CAREPAY_USER_ROLE",
+              "CAN_MANAGE_PROVIDER_USER_ROLE"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "PLATFORM_PAYER_SUPPORT_OPERATOR",
+              "ACCOUNT_HOLDER",
+              "PROVIDER_USER_MANAGER",
+              "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/with-password-encoded": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Save User With Encoded Password",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "saveUserWithEncodedPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserWithEncodedPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/units/{organisationalUnit}": {
+      "get": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Get Organisational Unit",
+        "description": "Permission(s) needed: USER_UNIT_VIEW",
+        "operationId": "getOrganisationalUnit",
+        "parameters": [
+          {
+            "name": "organisationalUnit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationalUnit_DetailsView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Update Organisational Unit",
+        "description": "Permission(s) needed: USER_UNIT_UPDATE",
+        "operationId": "updateOrganisationalUnit",
+        "parameters": [
+          {
+            "name": "organisationalUnit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationalUnit"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationalUnit"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Add Organisational Unit",
+        "description": "Permission(s) needed: USER_UNIT_UPDATE",
+        "operationId": "addOrganisationalUnit",
+        "parameters": [
+          {
+            "name": "organisationalUnit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationalUnit_ListView"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationalUnit_ListView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Delete Organisational Unit",
+        "description": "Permission(s) needed: USER_UNIT_UPDATE",
+        "operationId": "deleteOrganisationalUnit",
+        "parameters": [
+          {
+            "name": "organisationalUnit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/types/{id}": {
+      "get": {
+        "tags": [
+          "organisation-type-controller"
+        ],
+        "summary": "Get Type",
+        "description": "Permission(s) needed: USER_TYPE_VIEW",
+        "operationId": "getType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationType"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_TYPE_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "organisation-type-controller"
+        ],
+        "summary": "Update Type",
+        "description": "Permission(s) needed: USER_TYPE_UPDATE",
+        "operationId": "updateType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationType"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationType"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_TYPE_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "organisation-type-controller"
+        ],
+        "summary": "Delete Organisation Type",
+        "description": "Permission(s) needed: USER_TYPE_UPDATE",
+        "operationId": "deleteOrganisationType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_TYPE_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-users/{userId}/roles": {
+      "put": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Assign Roles To System User",
+        "description": "Permission(s) needed: CAN_MANAGE_SYSTEM_USER",
+        "operationId": "assignRolesToSystemUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "uniqueItems": true,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ACCOUNT_HOLDER",
+                    "PRINCIPAL",
+                    "DEPENDENT",
+                    "ENROLLEE",
+                    "MEMBER",
+                    "PARTICIPANT",
+                    "PAYER_LOANS_MANAGER",
+                    "CLAIM_AUDITOR",
+                    "PAYER_ANALYST",
+                    "PAYER_ACCOUNT_MANAGER",
+                    "PAYER_FINANCE_MANAGER",
+                    "PAYER_RULE_MANAGER",
+                    "PAYER_PROGRAM_MANAGER",
+                    "EMPLOYER",
+                    "PAYER_GENERAL_MANAGER",
+                    "PAYER_USER_MANAGER",
+                    "PAYER_ADMIN",
+                    "PAYER_UNDERWRITING_MANAGER",
+                    "PAYER_MEMBERSHIP_MANAGER",
+                    "PAYER_FINANCE_MANAGER_BASIS",
+                    "PAYER_FINANCE_MANAGER_APPROVER",
+                    "PAYER_FINANCE_MANAGER_CREATOR",
+                    "ENROLMENT_AGENT",
+                    "CASE_MANAGER",
+                    "CLAIM_MANAGER",
+                    "SENIOR_CLAIM_MANAGER",
+                    "AGENT",
+                    "AGENCY",
+                    "PAYER",
+                    "PROVIDER_PRICELIST_MANAGER",
+                    "PROVIDER_FINANCE_USER",
+                    "PROVIDER_FINANCE_MANAGER",
+                    "PROVIDER_RECEPTIONIST",
+                    "PROVIDER_CASHIER",
+                    "PROVIDER_MEDIC",
+                    "PROVIDER_USER_MANAGER",
+                    "PROVIDER_ADMIN",
+                    "PROVIDER",
+                    "PLATFORM_CLAIM_MANAGER",
+                    "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                    "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                    "PLATFORM_PROVIDER_ADMIN",
+                    "PLATFORM_PAYER_ADMIN",
+                    "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                    "PLATFORM_MEDICAL_MANAGER",
+                    "PLATFORM_ADMIN",
+                    "PLATFORM_CAREPAY_OPERATIONS",
+                    "PLATFORM_CAREPAY_ONBOARDING",
+                    "CUSTOMER_CARE_SENIOR",
+                    "CAREPAY_CUSTOMER_SERVICE",
+                    "CAREPAY",
+                    "SELF_ENROLMENT",
+                    "DATABASE_CLEANER",
+                    "VERIFIED_PROSPECT",
+                    "INTERNAL_FINANCE_ACCOUNTANT",
+                    "PARTIAL_REGISTRATION",
+                    "DATA_TRANSFER",
+                    "INTEGRATION_ENROLMENT",
+                    "INTEGRATION_ACCOUNT_MANAGER",
+                    "INTEGRATION_BENEFICIARY_MANAGER",
+                    "INTEGRATION_PROGRAM_MANAGER",
+                    "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                    "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                    "PAYER_ISIRO_MANAGER",
+                    "ACL_MANAGER",
+                    "COVER_RULES_MANAGEMENT"
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/permissions/{permission}": {
+      "get": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "Get Permission",
+        "description": "Permission(s) needed: USER_PERMISSION_VIEW",
+        "operationId": "getPermission",
+        "parameters": [
+          {
+            "name": "permission",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_PERMISSION_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "Update Permission",
+        "description": "Permission(s) needed: USER_PERMISSION_UPDATE",
+        "operationId": "updatePermission",
+        "parameters": [
+          {
+            "name": "permission",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Permission"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_PERMISSION_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "Delete Permission",
+        "description": "Permission(s) needed: USER_PERMISSION_UPDATE",
+        "operationId": "deletePermission",
+        "parameters": [
+          {
+            "name": "permission",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_PERMISSION_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Find Users",
+        "description": "Permission(s) needed: CAN_VIEW_USER",
+        "operationId": "findUsers",
+        "parameters": [
+          {
+            "name": "requestParams",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/FindUsersRequestParams_ListView"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User_ListView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_VIEW_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Add User",
+        "description": "Permission(s) needed: CAN_MANAGE_USER\u003cbr /\u003ePermission(s) needed: CAN_MANAGE_USER",
+        "operationId": "addUser_1",
+        "parameters": [
+          {
+            "name": "Accept-Version",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistrationCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/UserRegistrationResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          },
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Delete Users",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "deleteUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/grants": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get Grants",
+        "description": "Permission(s) needed: USER_GRANT_VIEW",
+        "operationId": "getGrants",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GrantResponse_ListView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_GRANT_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Add Grant",
+        "description": "Permission(s) needed: USER_GRANT_WRITE",
+        "operationId": "addGrant",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrantRequest_ListView"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Grant_ListView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_GRANT_WRITE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Delete User Grant",
+        "description": "Permission(s) needed: USER_GRANT_WRITE",
+        "operationId": "deleteUserGrant",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "orgUnitRef",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrganisationalUnit"
+            }
+          },
+          {
+            "name": "permission",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_GRANT_WRITE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/phonenumbers": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get Or Create Users",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "getOrCreateUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRef"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/types": {
+      "get": {
+        "tags": [
+          "organisation-type-controller"
+        ],
+        "summary": "List Types",
+        "description": "Permission(s) needed: USER_TYPE_VIEW",
+        "operationId": "listTypes",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganisationType"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_TYPE_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "organisation-type-controller"
+        ],
+        "summary": "Add Type",
+        "description": "Permission(s) needed: USER_TYPE_UPDATE",
+        "operationId": "addType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationType"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationType"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_TYPE_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "organisation-type-controller"
+        ],
+        "summary": "Delete Organisation Types",
+        "description": "Permission(s) needed: USER_TYPE_UPDATE",
+        "operationId": "deleteOrganisationTypes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_TYPE_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-users": {
+      "get": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "List",
+        "description": "Permission(s) needed: CAN_VIEW_SYSTEM_USER, CAN_MANAGE_SYSTEM_USER",
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SystemUserDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_VIEW_SYSTEM_USER",
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Create",
+        "description": "Permission(s) needed: CAN_MANAGE_SYSTEM_USER",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemUserDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-users/{userId}/suspend": {
+      "post": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Suspend System User",
+        "description": "Permission(s) needed: CAN_MANAGE_SYSTEM_USER",
+        "operationId": "suspendSystemUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-users/{userId}/reset-password": {
+      "post": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Reset Password",
+        "description": "Permission(s) needed: CAN_MANAGE_SYSTEM_USER",
+        "operationId": "resetPassword",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-users/{userId}/activate": {
+      "post": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Activate System User",
+        "description": "Permission(s) needed: CAN_MANAGE_SYSTEM_USER",
+        "operationId": "activateSystemUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-login": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "System Login",
+        "operationId": "systemLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemLoginResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/resetpassword": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Reset Password Old Endpoint",
+        "operationId": "resetPasswordOldEndpoint",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Reset Password",
+        "operationId": "resetPassword_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Refresh Token",
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "name": "Refresh-Token",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/permissions": {
+      "get": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "List Permissions",
+        "description": "Permission(s) needed: USER_PERMISSION_VIEW",
+        "operationId": "listPermissions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Permission_ListView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_PERMISSION_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "Add Permission",
+        "description": "Permission(s) needed: USER_PERMISSION_UPDATE",
+        "operationId": "addPermission",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Permission"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_PERMISSION_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "Delete Permissions",
+        "description": "Permission(s) needed: USER_PERMISSION_UPDATE",
+        "operationId": "deletePermissions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_PERMISSION_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Logout",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Authenticate",
+        "operationId": "authenticate_1",
+        "parameters": [
+          {
+            "name": "Accept-Version",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/LoginResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/User_LoginView"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          },
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/changepassword": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Change Password Old Endpoint",
+        "operationId": "changePasswordOldEndpoint",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/change-password": {
+      "post": {
+        "tags": [
+          "login-controller"
+        ],
+        "summary": "Change Password",
+        "operationId": "changePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/policies": {
+      "patch": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Update Security Policy",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "updateSecurityPolicy",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SecurityPolicyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/{phoneNumber}/verify": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get User",
+        "description": "Permission(s) needed: CAN_VIEW_USER",
+        "operationId": "getUser_1",
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_DetailView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_VIEW_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/users/phonenumbers/{phoneNumber}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get Or Create User",
+        "description": "Permission(s) needed: CAN_MANAGE_USER",
+        "operationId": "getOrCreateUser",
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_ListView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "CAN_MANAGE_USER"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "VERIFIED_PROSPECT",
+              "ACCOUNT_HOLDER",
+              "DATABASE_CLEANER",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/units": {
+      "get": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Find Organisational Units",
+        "description": "Permission(s) needed: USER_UNIT_VIEW",
+        "operationId": "findOrganisationalUnits",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganisationalUnit_ListView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Delete Organisational Units",
+        "description": "Permission(s) needed: USER_UNIT_UPDATE",
+        "operationId": "deleteOrganisationalUnits",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_UPDATE"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/units/{organisationalUnit}/tree": {
+      "get": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Get Organisational Unit Tree",
+        "operationId": "getOrganisationalUnitTree",
+        "parameters": [
+          {
+            "name": "organisationalUnit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationalUnit_TreeView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/units/{organisationalUnit}/casemanagers": {
+      "get": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Get Case Managers",
+        "description": "Permission(s) needed: USER_UNIT_VIEW",
+        "operationId": "getCaseManagers",
+        "parameters": [
+          {
+            "name": "organisationalUnit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GrantResponse_ListView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/units/tree": {
+      "get": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Get Organisational Unit Tree",
+        "operationId": "getOrganisationalUnitTree_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationalUnit_TreeView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/units/search/{searchTerm}": {
+      "get": {
+        "tags": [
+          "organisational-unit-controller"
+        ],
+        "summary": "Get Organisational Unit",
+        "description": "Permission(s) needed: USER_UNIT_VIEW",
+        "operationId": "getOrganisationalUnit_1",
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganisationalUnit_DetailsView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsAllowed": [
+              "USER_UNIT_VIEW"
+            ]
+          },
+          {
+            "RolesAllowed": [
+              "INTEGRATION_ENROLMENT",
+              "PLATFORM_ADMIN",
+              "ENROLMENT_AGENT",
+              "PROVIDER_USER_MANAGER",
+              "PAYER_USER_MANAGER",
+              "PAYER_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/system-users/{userId}": {
+      "get": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Read",
+        "description": "Permission(s) needed: CAN_VIEW_SYSTEM_USER, CAN_MANAGE_SYSTEM_USER",
+        "operationId": "read",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_VIEW_SYSTEM_USER",
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "system-user-controller"
+        ],
+        "summary": "Delete System User",
+        "description": "Permission(s) needed: CAN_MANAGE_SYSTEM_USER",
+        "operationId": "deleteSystemUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [
+          {
+            "PermissionsEnforced": [
+              "CAN_MANAGE_SYSTEM_USER"
+            ]
+          },
+          {
+            "RolesEnforced": [
+              "PLATFORM_ADMIN"
+            ]
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/roles": {
+      "get": {
+        "tags": [
+          "roles-controller"
+        ],
+        "summary": "Get Roles",
+        "operationId": "getRoles",
+        "parameters": [
+          {
+            "name": "all",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "ACCOUNT_HOLDER",
+                      "PRINCIPAL",
+                      "DEPENDENT",
+                      "ENROLLEE",
+                      "MEMBER",
+                      "PARTICIPANT",
+                      "PAYER_LOANS_MANAGER",
+                      "CLAIM_AUDITOR",
+                      "PAYER_ANALYST",
+                      "PAYER_ACCOUNT_MANAGER",
+                      "PAYER_FINANCE_MANAGER",
+                      "PAYER_RULE_MANAGER",
+                      "PAYER_PROGRAM_MANAGER",
+                      "EMPLOYER",
+                      "PAYER_GENERAL_MANAGER",
+                      "PAYER_USER_MANAGER",
+                      "PAYER_ADMIN",
+                      "PAYER_UNDERWRITING_MANAGER",
+                      "PAYER_MEMBERSHIP_MANAGER",
+                      "PAYER_FINANCE_MANAGER_BASIS",
+                      "PAYER_FINANCE_MANAGER_APPROVER",
+                      "PAYER_FINANCE_MANAGER_CREATOR",
+                      "ENROLMENT_AGENT",
+                      "CASE_MANAGER",
+                      "CLAIM_MANAGER",
+                      "SENIOR_CLAIM_MANAGER",
+                      "AGENT",
+                      "AGENCY",
+                      "PAYER",
+                      "PROVIDER_PRICELIST_MANAGER",
+                      "PROVIDER_FINANCE_USER",
+                      "PROVIDER_FINANCE_MANAGER",
+                      "PROVIDER_RECEPTIONIST",
+                      "PROVIDER_CASHIER",
+                      "PROVIDER_MEDIC",
+                      "PROVIDER_USER_MANAGER",
+                      "PROVIDER_ADMIN",
+                      "PROVIDER",
+                      "PLATFORM_CLAIM_MANAGER",
+                      "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                      "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                      "PLATFORM_PROVIDER_ADMIN",
+                      "PLATFORM_PAYER_ADMIN",
+                      "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                      "PLATFORM_MEDICAL_MANAGER",
+                      "PLATFORM_ADMIN",
+                      "PLATFORM_CAREPAY_OPERATIONS",
+                      "PLATFORM_CAREPAY_ONBOARDING",
+                      "CUSTOMER_CARE_SENIOR",
+                      "CAREPAY_CUSTOMER_SERVICE",
+                      "CAREPAY",
+                      "SELF_ENROLMENT",
+                      "DATABASE_CLEANER",
+                      "VERIFIED_PROSPECT",
+                      "INTERNAL_FINANCE_ACCOUNTANT",
+                      "PARTIAL_REGISTRATION",
+                      "DATA_TRANSFER",
+                      "INTEGRATION_ENROLMENT",
+                      "INTEGRATION_ACCOUNT_MANAGER",
+                      "INTEGRATION_BENEFICIARY_MANAGER",
+                      "INTEGRATION_PROGRAM_MANAGER",
+                      "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                      "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                      "PAYER_ISIRO_MANAGER",
+                      "ACL_MANAGER",
+                      "COVER_RULES_MANAGEMENT"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/roles/permissions": {
+      "get": {
+        "tags": [
+          "roles-controller"
+        ],
+        "summary": "Get Role Permissions",
+        "operationId": "getRolePermissions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/regions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get All Region Details",
+        "operationId": "getAllRegionDetails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Country"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/publickey": {
+      "get": {
+        "tags": [
+          "public-key-controller"
+        ],
+        "summary": "Get Public Key",
+        "operationId": "getPublicKey",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicKeyDTO"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/permissions/names": {
+      "get": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "List Permission Names",
+        "operationId": "listPermissionNames",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/permissions/map": {
+      "get": {
+        "tags": [
+          "permission-controller"
+        ],
+        "summary": "List Permission Map",
+        "operationId": "listPermissionMap",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Countries",
+        "operationId": "getCountries",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Country"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{country}/subsubsubregions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Sub Region",
+        "operationId": "getSubSubRegion",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subSubRegion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubSubSubRegion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{country}/subsubregions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Sub Region",
+        "operationId": "getSubSubRegion_1",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subRegion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubSubRegion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{country}/subregions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Regions",
+        "operationId": "getSubRegions",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubRegion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{country}/regions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Regions",
+        "operationId": "getRegions",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Region"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Region",
+        "operationId": "getRegion",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Region"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}/sub-regions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Regions",
+        "operationId": "getSubRegions_1",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubRegion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}/sub-regions/{subRegionId}": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Region",
+        "operationId": "getSubRegion",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubRegion"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}/sub-regions/{subRegionId}/sub-sub-regions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Sub Regions",
+        "operationId": "getSubSubRegions",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubSubRegion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}/sub-regions/{subRegionId}/sub-sub-regions/{subSubRegionId}": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Sub Region",
+        "operationId": "getSubSubRegion_2",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subSubRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubSubRegion"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}/sub-regions/{subRegionId}/sub-sub-regions/{subSubRegionId}/sub-sub-sub-regions": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Sub Sub Regions",
+        "operationId": "getSubSubSubRegions",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subSubRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubSubSubRegion"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/countries/{countryId}/regions/{regionId}/sub-regions/{subRegionId}/sub-sub-regions/{subSubRegionId}/sub-sub-sub-regions/{subSubSubRegionId}": {
+      "get": {
+        "tags": [
+          "region-controller"
+        ],
+        "summary": "Get Sub Sub Sub Region",
+        "operationId": "getSubSubSubRegion",
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "regionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subSubRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "subSubSubRegionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubSubSubRegion"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/cache": {
+      "get": {
+        "tags": [
+          "cache-controller"
+        ],
+        "summary": "Get Cached Data",
+        "operationId": "getCachedData",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CachedData_TreeView"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
+    "/.well-known/jwks.json": {
+      "get": {
+        "tags": [
+          "public-key-controller"
+        ],
+        "summary": "Get JWKS",
+        "operationId": "getJWKS",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Keys"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PermitAll": []
+          },
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Grant": {
+        "type": "object",
+        "properties": {
+          "organisationalUnit": {
+            "$ref": "#/components/schemas/OrganisationalUnit"
+          },
+          "permission": {
+            "$ref": "#/components/schemas/Permission"
+          },
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          }
+        }
+      },
+      "OrganisationType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "OrganisationalUnit": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/OrganisationalUnit"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganisationalUnit"
+            }
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "organisationTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganisationType"
+            }
+          }
+        }
+      },
+      "Permission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "inheritedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "grants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Grant"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          },
+          "lockoutDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "passwordDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "securityPolicy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "token": {
+            "type": "string"
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "loginFailureCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "twoFactorCode": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en"
+          },
+          "hasPassword": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "suspended": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Grant_DetailView": {
+        "type": "object",
+        "properties": {
+          "organisationalUnit": {
+            "$ref": "#/components/schemas/OrganisationalUnit_DetailView"
+          },
+          "permission": {
+            "$ref": "#/components/schemas/Permission_DetailView"
+          },
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission_DetailView"
+            }
+          }
+        }
+      },
+      "OrganisationalUnit_DetailView": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/OrganisationalUnit_DetailView"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Permission_DetailView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "inheritedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission_DetailView"
+            }
+          }
+        }
+      },
+      "User_DetailView": {
+        "type": "object",
+        "properties": {
+          "grants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Grant_DetailView"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          },
+          "lockoutDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "passwordDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "securityPolicy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "loginFailureCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "twoFactorCode": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en"
+          },
+          "hasPassword": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "suspended": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UserWithEncodedPassword": {
+        "required": [
+          "encodedPassword",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "encodedPassword": {
+            "pattern": "\\$2a\\$10\\$.{53}",
+            "type": "string"
+          }
+        }
+      },
+      "SystemUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DISABLED",
+              "ENABLED",
+              "LOCKED",
+              "ACTIVE",
+              "SUSPENDED"
+            ]
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRegistrationCommand": {
+        "required": [
+          "name",
+          "securityPolicy"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "securityPolicy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          },
+          "password": {
+            "type": "string"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          }
+        }
+      },
+      "UserRegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "User_ListView": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "lockoutDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "passwordDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "securityPolicy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "loginFailureCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "twoFactorCode": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "suspended": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GrantRequest_ListView": {
+        "type": "object",
+        "properties": {
+          "organisationalUnitId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "permissionName": {
+            "type": "string"
+          }
+        }
+      },
+      "Grant_ListView": {
+        "type": "object",
+        "properties": {
+          "organisationalUnit": {
+            "$ref": "#/components/schemas/OrganisationalUnit_ListView"
+          },
+          "permission": {
+            "$ref": "#/components/schemas/Permission_ListView"
+          },
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission_ListView"
+            }
+          }
+        }
+      },
+      "OrganisationalUnit_ListView": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/OrganisationalUnit_ListView"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Permission_ListView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "inheritedPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission_ListView"
+            }
+          }
+        }
+      },
+      "UserRef": {
+        "type": "object",
+        "properties": {
+          "refId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SystemLoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "SystemLoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenTtl": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ChangePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "userRef": {
+            "$ref": "#/components/schemas/UserRef"
+          },
+          "newPassword": {
+            "type": "string"
+          },
+          "resetPasswordUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "userDetails": {
+            "$ref": "#/components/schemas/UserDetails"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "accessTokenTtl": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          },
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en"
+          },
+          "hasPassword": {
+            "type": "boolean"
+          }
+        }
+      },
+      "User_LoginView": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          },
+          "lockoutDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "passwordDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "securityPolicy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "token": {
+            "type": "string"
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "loginFailureCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "twoFactorCode": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en"
+          },
+          "hasPassword": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "suspended": {
+            "type": "boolean"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SecurityPolicyRequest": {
+        "type": "object",
+        "properties": {
+          "policy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          }
+        }
+      },
+      "FindUsersRequestParams_ListView": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "deprecated": true
+          },
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GrantResponse_ListView": {
+        "type": "object",
+        "properties": {
+          "principal": {
+            "$ref": "#/components/schemas/Principal_ListView"
+          },
+          "organisationalUnit": {
+            "$ref": "#/components/schemas/OrganisationalUnit_ListView"
+          },
+          "permission": {
+            "$ref": "#/components/schemas/Permission_ListView"
+          }
+        }
+      },
+      "Principal_ListView": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ACCOUNT_HOLDER",
+                "PRINCIPAL",
+                "DEPENDENT",
+                "ENROLLEE",
+                "MEMBER",
+                "PARTICIPANT",
+                "PAYER_LOANS_MANAGER",
+                "CLAIM_AUDITOR",
+                "PAYER_ANALYST",
+                "PAYER_ACCOUNT_MANAGER",
+                "PAYER_FINANCE_MANAGER",
+                "PAYER_RULE_MANAGER",
+                "PAYER_PROGRAM_MANAGER",
+                "EMPLOYER",
+                "PAYER_GENERAL_MANAGER",
+                "PAYER_USER_MANAGER",
+                "PAYER_ADMIN",
+                "PAYER_UNDERWRITING_MANAGER",
+                "PAYER_MEMBERSHIP_MANAGER",
+                "PAYER_FINANCE_MANAGER_BASIS",
+                "PAYER_FINANCE_MANAGER_APPROVER",
+                "PAYER_FINANCE_MANAGER_CREATOR",
+                "ENROLMENT_AGENT",
+                "CASE_MANAGER",
+                "CLAIM_MANAGER",
+                "SENIOR_CLAIM_MANAGER",
+                "AGENT",
+                "AGENCY",
+                "PAYER",
+                "PROVIDER_PRICELIST_MANAGER",
+                "PROVIDER_FINANCE_USER",
+                "PROVIDER_FINANCE_MANAGER",
+                "PROVIDER_RECEPTIONIST",
+                "PROVIDER_CASHIER",
+                "PROVIDER_MEDIC",
+                "PROVIDER_USER_MANAGER",
+                "PROVIDER_ADMIN",
+                "PROVIDER",
+                "PLATFORM_CLAIM_MANAGER",
+                "PLATFORM_PAYER_SUPPORT_OPERATOR",
+                "PLATFORM_PARTICIPANT_SUPPORT_OPERATOR",
+                "PLATFORM_PROVIDER_ADMIN",
+                "PLATFORM_PAYER_ADMIN",
+                "PLATFORM_PROVIDER_SUPPORT_OPERATOR",
+                "PLATFORM_MEDICAL_MANAGER",
+                "PLATFORM_ADMIN",
+                "PLATFORM_CAREPAY_OPERATIONS",
+                "PLATFORM_CAREPAY_ONBOARDING",
+                "CUSTOMER_CARE_SENIOR",
+                "CAREPAY_CUSTOMER_SERVICE",
+                "CAREPAY",
+                "SELF_ENROLMENT",
+                "DATABASE_CLEANER",
+                "VERIFIED_PROSPECT",
+                "INTERNAL_FINANCE_ACCOUNTANT",
+                "PARTIAL_REGISTRATION",
+                "DATA_TRANSFER",
+                "INTEGRATION_ENROLMENT",
+                "INTEGRATION_ACCOUNT_MANAGER",
+                "INTEGRATION_BENEFICIARY_MANAGER",
+                "INTEGRATION_PROGRAM_MANAGER",
+                "INTEGRATION_PARTICIPANT_KYC_TRANSFER",
+                "INTEGRATION_PARTICIPANT_DOCUMENT_TRANSFER",
+                "PAYER_ISIRO_MANAGER",
+                "ACL_MANAGER",
+                "COVER_RULES_MANAGEMENT"
+              ]
+            }
+          },
+          "lockoutDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "passwordDate": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "securityPolicy": {
+            "type": "string",
+            "enum": [
+              "WEAK",
+              "NORMAL",
+              "STRONG"
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "suspended": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OrganisationType_DetailsView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "OrganisationalUnit_DetailsView": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/OrganisationalUnit_DetailsView"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "organisationTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganisationType_DetailsView"
+            }
+          }
+        }
+      },
+      "OrganisationalUnit_TreeView": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/OrganisationalUnit_TreeView"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganisationalUnit_TreeView"
+            }
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Country": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Region"
+            }
+          }
+        }
+      },
+      "Region": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subRegions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubRegion"
+            }
+          },
+          "externalId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SubRegion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "subSubRegions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubSubRegion"
+            }
+          }
+        }
+      },
+      "SubSubRegion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "subSubSubRegions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubSubSubRegion"
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "SubSubSubRegion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "PublicKeyDTO": {
+        "type": "object",
+        "properties": {
+          "publicKey": {
+            "type": "string"
+          }
+        }
+      },
+      "CachedData_TreeView": {
+        "type": "object",
+        "properties": {
+          "publicKey": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "inheritedPermissions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          },
+          "organisation": {
+            "$ref": "#/components/schemas/OrganisationalUnit_TreeView"
+          }
+        }
+      },
+      "Key": {
+        "type": "object",
+        "properties": {
+          "kty": {
+            "type": "string"
+          },
+          "alg": {
+            "type": "string"
+          },
+          "kid": {
+            "type": "string"
+          },
+          "n": {
+            "type": "string"
+          },
+          "e": {
+            "type": "string"
+          }
+        }
+      },
+      "Keys": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Key"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-tyk-api-gateway": {
+    "info": {
+      "name": "usermanagement",
+      "state": {
+        "active": true
+      }
+    },
+    "upstream": {
+      "url": "http://usermanagement"
+    },
+    "server": {
+      "listenPath": {
+        "value": "/api/usermanagement",
+        "strip": true
+      }
+    }
+  }
+}

@@ -5,6 +5,8 @@ import "google.golang.org/grpc"
 // Client represents an open connection to Authzed.
 //
 // Clients are backed by a gRPC client and as such are thread-safe.
+//
+//go:generate go run github.com/vektra/mockery/v2 --name=PermissionsServiceClient
 type Client struct {
 	PermissionsServiceClient
 }

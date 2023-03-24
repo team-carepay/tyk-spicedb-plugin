@@ -38,4 +38,10 @@ jobs:
 
     - name: Build using tyk-plugin-compiler
       run: |
-        docker run --rm -v $(pwd):/plugin-source tykio/tyk-plugin-compiler:v4.0.3 my-post-plugin.so
+        docker run --rm -v $(pwd):/plugin-source tykio/tyk-plugin-compiler:v4.2.0 my-post-plugin.so
+
+    - name: Archive plugin
+      uses: actions/upload-artifact@v3
+      with:
+        path: |
+          spicedb-plugin_*_linux_amd64.so

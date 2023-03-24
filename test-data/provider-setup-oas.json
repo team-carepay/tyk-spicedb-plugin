@@ -1,0 +1,4887 @@
+{
+    "components": {
+        "headers": {
+            "X-Has-Next-Page": {
+                "description": "check for if there is another page",
+                "schema": {
+                    "type": "boolean"
+                }
+            },
+            "X-Page": {
+                "description": "current page number",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "X-Size": {
+                "description": "size of pages",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "X-Total-Count": {
+                "description": "total count of elements",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "X-Total-Pages": {
+                "description": "total pages",
+                "schema": {
+                    "type": "integer"
+                }
+            }
+        },
+        "parameters": {
+            "accountCode": {
+                "description": "The natural key of the account to retrieve",
+                "in": "path",
+                "name": "accountCode",
+                "required": true,
+                "schema": {
+                    "example": "account12345",
+                    "type": "string"
+                }
+            },
+            "bedCode": {
+                "description": "The natural key of the bed",
+                "in": "path",
+                "name": "bedCode",
+                "required": true,
+                "schema": {
+                    "example": "bed4023",
+                    "type": "string"
+                }
+            },
+            "bedFilter": {
+                "description": "filter for beds",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "bedType": {
+                            "$ref": "#/components/schemas/BedType"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "contactCode": {
+                "description": "The natural key of the contact",
+                "in": "path",
+                "name": "contactCode",
+                "required": true,
+                "schema": {
+                    "example": "contact500",
+                    "type": "string"
+                }
+            },
+            "contactFilter": {
+                "description": "filter for contacts",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "contactCode": {
+                            "example": "contact500",
+                            "type": "string"
+                        },
+                        "department": {
+                            "$ref": "#/components/schemas/DepartmentType"
+                        },
+                        "email": {
+                            "format": "email",
+                            "type": "string"
+                        },
+                        "fax": {
+                            "type": "string"
+                        },
+                        "firstName": {
+                            "example": "Helly",
+                            "type": "string"
+                        },
+                        "lastName": {
+                            "example": "r",
+                            "type": "string"
+                        },
+                        "phone": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "countryCode": {
+                "description": "The natural key of a country",
+                "in": "path",
+                "name": "countryCode",
+                "required": true,
+                "schema": {
+                    "example": "NL",
+                    "type": "string"
+                }
+            },
+            "countryFilter": {
+                "description": "filter for country",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "countryCodes": {
+                            "description": "list of country codes",
+                            "example": [
+                                "AE"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "employeeCode": {
+                "description": "The natural key of an employee",
+                "in": "path",
+                "name": "employeeCode",
+                "required": true,
+                "schema": {
+                    "example": "employee4023",
+                    "type": "string"
+                }
+            },
+            "employeeFilter": {
+                "description": "filter for employee",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "employeeCode": {
+                            "example": "12341",
+                            "type": "string"
+                        },
+                        "firstName": {
+                            "example": "Robert",
+                            "type": "string"
+                        },
+                        "jobRole": {
+                            "$ref": "#/components/schemas/JobRole"
+                        },
+                        "lastName": {
+                            "example": "Shamrock",
+                            "type": "string"
+                        },
+                        "speciality": {
+                            "example": "Surgery",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "employeeLicenseFilter": {
+                "description": "filter for employee license",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "licenseNumber": {
+                            "type": "string"
+                        },
+                        "validFrom": {
+                            "example": "2022-07-21T00:00:00Z",
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        "validTo": {
+                            "example": "2030-07-21T00:00:00Z",
+                            "format": "date-time",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "employeeLicenseNumber": {
+                "description": "The natural key of an employee license",
+                "in": "path",
+                "name": "employeeLicenseNumber",
+                "required": true,
+                "schema": {
+                    "example": "employeeLicense4023",
+                    "type": "string"
+                }
+            },
+            "employeeSpecialitiesFilter": {
+                "description": "filter for employee specialities.",
+                "explode": true,
+                "in": "query",
+                "name": "employee specialities filter",
+                "schema": {
+                    "properties": {
+                        "code": {
+                            "description": "Employee speciality code",
+                            "example": "CON-C",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "Name of the employee speciality",
+                            "example": "CARDIOLOGY - Consultant - Cardiology",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "geolocationFilter": {
+                "description": "filter for geolocation",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "codes": {
+                            "example": [
+                                "AMS"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "name": {
+                            "example": "Amsterdam",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "levelOneCode": {
+                "description": "The natural key of a level one geolocation",
+                "in": "path",
+                "name": "levelOneCode",
+                "required": true,
+                "schema": {
+                    "example": "NOORDHOL",
+                    "type": "string"
+                }
+            },
+            "levelTwoCode": {
+                "description": "The natural key of a level two geolocation",
+                "in": "path",
+                "name": "levelTwoCode",
+                "required": true,
+                "schema": {
+                    "example": "AMS",
+                    "type": "string"
+                }
+            },
+            "paginationParameters": {
+                "description": "Pagination query parameters",
+                "explode": true,
+                "in": "query",
+                "name": "pagination",
+                "required": true,
+                "schema": {
+                    "$ref": "#/components/schemas/Pagination"
+                },
+                "style": "form"
+            },
+            "paymentAccountFilter": {
+                "description": "filter for payment accounts",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "accountCode": {
+                            "example": "account500",
+                            "type": "string"
+                        },
+                        "accountHolderName": {
+                            "example": "freddie",
+                            "type": "string"
+                        },
+                        "accountNumber": {
+                            "example": "ING4000",
+                            "type": "string"
+                        },
+                        "accountType": {
+                            "$ref": "#/components/schemas/PaymentAccountType"
+                        },
+                        "currency": {
+                            "example": "EUR",
+                            "type": "string"
+                        },
+                        "primaryClaimsAccount": {
+                            "example": false,
+                            "type": "boolean"
+                        },
+                        "primaryLoansAccount": {
+                            "example": false,
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "providerCode": {
+                "description": "The natural key of the provider",
+                "in": "path",
+                "name": "providerCode",
+                "required": true,
+                "schema": {
+                    "example": "provider1234",
+                    "type": "string"
+                }
+            },
+            "providerDocumentCode": {
+                "description": "The natural key of a provider document",
+                "in": "path",
+                "name": "providerDocumentCode",
+                "required": true,
+                "schema": {
+                    "example": "providerDocument4023",
+                    "type": "string"
+                }
+            },
+            "providerDocumentFilter": {
+                "description": "filter for provider documents",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "documentType": {
+                            "$ref": "#/components/schemas/ProviderDocumentType"
+                        },
+                        "name": {
+                            "example": "my contract",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "providerFilter": {
+                "description": "filter for providers",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "businessType": {
+                            "items": {
+                                "$ref": "#/components/schemas/ProviderBusinessType"
+                            },
+                            "type": "array"
+                        },
+                        "city": {
+                            "example": "Amsterdam",
+                            "type": "string"
+                        },
+                        "classification": {
+                            "example": "tier 1",
+                            "type": "string"
+                        },
+                        "country": {
+                            "example": "NL",
+                            "type": "string"
+                        },
+                        "externalSystemCodes": {
+                            "description": "List of external system codes",
+                            "example": [
+                                "systemCode1234"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "externalSystemIdentifiers": {
+                            "description": "List of external system identifiers",
+                            "example": [
+                                "E-CLAIMLINK"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "geolocationLevelTwoCode": {
+                            "example": "AMS",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "Likeness match of a provider name",
+                            "example": "st Paul's",
+                            "type": "string"
+                        },
+                        "namesExact": {
+                            "description": "List of provider names to find (exact match)",
+                            "example": [
+                                "st Rob's"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "ownership": {
+                            "items": {
+                                "$ref": "#/components/schemas/Ownership"
+                            },
+                            "type": "array"
+                        },
+                        "providerCodes": {
+                            "description": "List of provider codes",
+                            "example": [
+                                "provider1"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "registrationCode": {
+                            "example": "ABC123",
+                            "type": "string"
+                        },
+                        "service": {
+                            "example": [
+                                "OUTPATIENT"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "speciality": {
+                            "example": [
+                                "PHYSIOTHERAPY"
+                            ],
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "status": {
+                            "$ref": "#/components/schemas/ProviderStatus"
+                        },
+                        "type": {
+                            "items": {
+                                "$ref": "#/components/schemas/ProviderType"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "providerLicenseFilter": {
+                "description": "filter for provider licenses",
+                "explode": true,
+                "in": "query",
+                "name": "filter",
+                "schema": {
+                    "properties": {
+                        "dateOfValidity": {
+                            "example": "2022-07-21T00:00:00Z",
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        "issuingAuthority": {
+                            "$ref": "#/components/schemas/IssuingAuthority"
+                        },
+                        "licenseNumbers": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "licenseType": {
+                            "$ref": "#/components/schemas/ProviderLicenseType"
+                        }
+                    },
+                    "type": "object"
+                },
+                "style": "form"
+            },
+            "providerLicenseNumber": {
+                "description": "The natural key of a provider license",
+                "in": "path",
+                "name": "providerLicenseNumber",
+                "required": true,
+                "schema": {
+                    "example": "providerLicense4023",
+                    "type": "string"
+                }
+            }
+        },
+        "schemas": {
+            "Bed": {
+                "example": {
+                    "bedCode": "bed500",
+                    "bedType": "WARD",
+                    "capacity": 500
+                },
+                "properties": {
+                    "bedCode": {
+                        "type": "string"
+                    },
+                    "bedType": {
+                        "$ref": "#/components/schemas/BedType"
+                    },
+                    "capacity": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "BedRequest": {
+                "example": {
+                    "bedType": "WARD",
+                    "capacity": 500
+                },
+                "properties": {
+                    "bedType": {
+                        "$ref": "#/components/schemas/BedType"
+                    },
+                    "capacity": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "bedType",
+                    "capacity"
+                ]
+            },
+            "BedType": {
+                "enum": [
+                    "WARD",
+                    "HDU",
+                    "ICU"
+                ],
+                "type": "string"
+            },
+            "Beds": {
+                "items": {
+                    "$ref": "#/components/schemas/Bed"
+                },
+                "type": "array"
+            },
+            "Classification": {
+                "example": {
+                    "name": "tierOne"
+                },
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Classifications": {
+                "items": {
+                    "$ref": "#/components/schemas/Classification"
+                },
+                "type": "array"
+            },
+            "Contact": {
+                "example": {
+                    "contactCode": "contact3000",
+                    "department": "INSURANCE",
+                    "email": "hellyr@somewhere.com",
+                    "escalationLevel": 1,
+                    "fax": "f0134567243",
+                    "firstName": "Helly",
+                    "lastName": "R",
+                    "otherDepartment": null,
+                    "phone": "ext01231412",
+                    "role": "Data Refiner"
+                },
+                "properties": {
+                    "contactCode": {
+                        "type": "string"
+                    },
+                    "department": {
+                        "$ref": "#/components/schemas/DepartmentType"
+                    },
+                    "email": {
+                        "format": "email",
+                        "type": "string"
+                    },
+                    "escalationLevel": {
+                        "format": "int32",
+                        "maximum": 3,
+                        "minimum": 1,
+                        "type": "integer"
+                    },
+                    "fax": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "otherDepartment": {
+                        "nullable": true,
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ContactRequest": {
+                "example": {
+                    "department": "INSURANCE",
+                    "email": "hellyr@somewhere.com",
+                    "escalationLevel": 1,
+                    "fax": "f0134567243",
+                    "firstName": "Helly",
+                    "lastName": "R",
+                    "otherDepartment": null,
+                    "phone": "ext01231412",
+                    "role": "Data Refiner"
+                },
+                "properties": {
+                    "department": {
+                        "$ref": "#/components/schemas/DepartmentType"
+                    },
+                    "email": {
+                        "format": "email",
+                        "type": "string"
+                    },
+                    "escalationLevel": {
+                        "format": "int32",
+                        "maximum": 3,
+                        "minimum": 1,
+                        "type": "integer"
+                    },
+                    "fax": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "otherDepartment": {
+                        "nullable": true,
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "role",
+                    "email",
+                    "phone",
+                    "department"
+                ]
+            },
+            "Contacts": {
+                "items": {
+                    "$ref": "#/components/schemas/Contact"
+                },
+                "type": "array"
+            },
+            "Countries": {
+                "items": {
+                    "$ref": "#/components/schemas/Country"
+                },
+                "type": "array"
+            },
+            "Country": {
+                "properties": {
+                    "code": {
+                        "example": "NL",
+                        "type": "string"
+                    },
+                    "name": {
+                        "example": "The Netherlands",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "DepartmentType": {
+                "enum": [
+                    "INSURANCE",
+                    "FINANCE",
+                    "OTHER"
+                ],
+                "type": "string"
+            },
+            "DownloadUrl": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Employee": {
+                "example": {
+                    "employeeCode": "em12341",
+                    "firstName": "Robert",
+                    "jobRole": "CLINICIAN",
+                    "lastName": "Jones",
+                    "licenseNumber": "license12345",
+                    "speciality": "SURGERY"
+                },
+                "properties": {
+                    "employeeCode": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "jobRole": {
+                        "$ref": "#/components/schemas/JobRole"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "licenseNumber": {
+                        "type": "string"
+                    },
+                    "speciality": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EmployeeCreateRequest": {
+                "example": {
+                    "firstName": "Robert",
+                    "jobRole": "CLINICIAN",
+                    "lastName": "Jones",
+                    "license": {
+                        "licenseNumber": "license12345",
+                        "validFrom": "2022-07-21T00:00:00Z",
+                        "validTo": "2030-07-21T00:00:00Z"
+                    },
+                    "speciality": "Surgery"
+                },
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "jobRole": {
+                        "$ref": "#/components/schemas/JobRole"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "license": {
+                        "$ref": "#/components/schemas/EmployeeLicenseRequest"
+                    },
+                    "speciality": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EmployeeLicense": {
+                "example": {
+                    "licenseNumber": "license12345",
+                    "validFrom": "2022-07-21T00:00:00Z",
+                    "validTo": "2030-07-21T00:00:00Z"
+                },
+                "properties": {
+                    "licenseNumber": {
+                        "type": "string"
+                    },
+                    "validFrom": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "validTo": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                }
+            },
+            "EmployeeLicenseRequest": {
+                "example": {
+                    "licenseNumber": "license12345",
+                    "validFrom": "2022-07-21T00:00:00Z",
+                    "validTo": "2030-07-21T00:00:00Z"
+                },
+                "properties": {
+                    "licenseNumber": {
+                        "type": "string"
+                    },
+                    "validFrom": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "validTo": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                }
+            },
+            "EmployeeLicenses": {
+                "items": {
+                    "$ref": "#/components/schemas/EmployeeLicense"
+                },
+                "type": "array"
+            },
+            "EmployeeSpecialities": {
+                "items": {
+                    "$ref": "#/components/schemas/EmployeeSpeciality"
+                },
+                "type": "array"
+            },
+            "EmployeeSpeciality": {
+                "properties": {
+                    "code": {
+                        "example": "CON-C",
+                        "type": "string"
+                    },
+                    "name": {
+                        "example": "CARDIOLOGY - Consultant - Cardiology",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "code"
+                ]
+            },
+            "EmployeeUpdateRequest": {
+                "example": {
+                    "firstName": "Robert",
+                    "jobRole": "CLINICIAN",
+                    "lastName": "Jones",
+                    "speciality": "Surgery"
+                },
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "jobRole": {
+                        "$ref": "#/components/schemas/JobRole"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "speciality": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Employees": {
+                "items": {
+                    "$ref": "#/components/schemas/Employee"
+                },
+                "type": "array"
+            },
+            "Geolocation": {
+                "properties": {
+                    "country": {
+                        "$ref": "#/components/schemas/Country"
+                    },
+                    "levelOne": {
+                        "$ref": "#/components/schemas/GeolocationLevelOne"
+                    },
+                    "levelTwo": {
+                        "$ref": "#/components/schemas/GeolocationLevelTwo"
+                    }
+                },
+                "type": "object"
+            },
+            "GeolocationLevelOne": {
+                "properties": {
+                    "code": {
+                        "example": "NOORDHOLLAND",
+                        "type": "string"
+                    },
+                    "countryCode": {
+                        "example": "AMS",
+                        "type": "string"
+                    },
+                    "name": {
+                        "example": "Noord Holland",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GeolocationLevelOnes": {
+                "items": {
+                    "$ref": "#/components/schemas/GeolocationLevelOne"
+                },
+                "type": "array"
+            },
+            "GeolocationLevelTwo": {
+                "properties": {
+                    "code": {
+                        "example": "AMS",
+                        "type": "string"
+                    },
+                    "levelOneCode": {
+                        "example": "NOORDHOLLAND",
+                        "type": "string"
+                    },
+                    "name": {
+                        "example": "Amsterdam",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GeolocationLevelTwos": {
+                "items": {
+                    "$ref": "#/components/schemas/GeolocationLevelTwo"
+                },
+                "type": "array"
+            },
+            "IssuingAuthority": {
+                "enum": [
+                    "DHA",
+                    "DOH",
+                    "MOH"
+                ],
+                "type": "string"
+            },
+            "JobRole": {
+                "enum": [
+                    "CLINICIAN"
+                ],
+                "type": "string"
+            },
+            "OperatingHours": {
+                "example": {
+                    "closingTime": "09:00",
+                    "dayOfTheWeek": 0,
+                    "openingTime": "08:00"
+                },
+                "properties": {
+                    "closingTime": {
+                        "type": "string"
+                    },
+                    "dayOfTheWeek": {
+                        "type": "integer"
+                    },
+                    "openingTime": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Ownership": {
+                "default": "NONE",
+                "enum": [
+                    "NONE",
+                    "GOVERNMENT",
+                    "PRIVATE",
+                    "FAITH_BASED",
+                    "COMMUNITY",
+                    "OTHER"
+                ],
+                "type": "string"
+            },
+            "Pagination": {
+                "example": {
+                    "page": 0,
+                    "size": 20,
+                    "sort": "name,asc"
+                },
+                "properties": {
+                    "page": {
+                        "type": "integer"
+                    },
+                    "size": {
+                        "type": "integer"
+                    },
+                    "sort": {
+                        "description": "comma separated String for sorting (attribute,[asc|desc])",
+                        "example": "name,asc",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PaymentAccount": {
+                "example": {
+                    "accountCode": "account12345",
+                    "accountHolderName": "me",
+                    "accountNumber": "bankAccount4000",
+                    "accountType": "BANK",
+                    "bankBranchCode": "bank50",
+                    "bankName": "account4000",
+                    "bicCode": "swift12345",
+                    "claimsAccount": true,
+                    "currency": "EUR",
+                    "loansAccount": false,
+                    "mobileMoneyService": "PayBill",
+                    "paymentServiceProvider": "MPESA",
+                    "primaryClaimsAccount": true,
+                    "primaryLoansAccount": false
+                },
+                "properties": {
+                    "accountCode": {
+                        "type": "string"
+                    },
+                    "accountHolderName": {
+                        "type": "string"
+                    },
+                    "accountNumber": {
+                        "type": "string"
+                    },
+                    "accountType": {
+                        "$ref": "#/components/schemas/PaymentAccountType"
+                    },
+                    "bankBranchCode": {
+                        "type": "string"
+                    },
+                    "bankName": {
+                        "type": "string"
+                    },
+                    "bicCode": {
+                        "type": "string"
+                    },
+                    "claimsAccount": {
+                        "type": "boolean"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "loansAccount": {
+                        "type": "boolean"
+                    },
+                    "mobileMoneyService": {
+                        "type": "string"
+                    },
+                    "paymentServiceProvider": {
+                        "type": "string"
+                    },
+                    "primaryClaimsAccount": {
+                        "type": "boolean"
+                    },
+                    "primaryLoansAccount": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "PaymentAccountRequest": {
+                "example": {
+                    "accountHolderName": "me",
+                    "accountNumber": "bankAccount4000",
+                    "accountType": "BANK",
+                    "bankBranchCode": "bank50",
+                    "bankName": "account4000",
+                    "bicCode": "swift12345",
+                    "claimsAccount": true,
+                    "currency": "EUR",
+                    "loansAccount": false,
+                    "mobileMoneyService": "PayBill",
+                    "paymentServiceProvider": "MPESA",
+                    "primaryClaimsAccount": true,
+                    "primaryLoansAccount": false
+                },
+                "properties": {
+                    "accountHolderName": {
+                        "type": "string"
+                    },
+                    "accountNumber": {
+                        "type": "string"
+                    },
+                    "accountType": {
+                        "$ref": "#/components/schemas/PaymentAccountType"
+                    },
+                    "bankBranchCode": {
+                        "type": "string"
+                    },
+                    "bankName": {
+                        "type": "string"
+                    },
+                    "bicCode": {
+                        "type": "string"
+                    },
+                    "claimsAccount": {
+                        "type": "boolean"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "loansAccount": {
+                        "type": "boolean"
+                    },
+                    "mobileMoneyService": {
+                        "type": "string"
+                    },
+                    "paymentServiceProvider": {
+                        "type": "string"
+                    },
+                    "primaryClaimsAccount": {
+                        "type": "boolean"
+                    },
+                    "primaryLoansAccount": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "primaryLoansAccount",
+                    "primaryClaimsAccount",
+                    "accountType",
+                    "loansAccount",
+                    "claimsAccount",
+                    "accountNumber",
+                    "accountHolderName",
+                    "currency"
+                ]
+            },
+            "PaymentAccountType": {
+                "enum": [
+                    "BANK",
+                    "MOBILE_WALLET"
+                ],
+                "type": "string"
+            },
+            "PaymentAccounts": {
+                "items": {
+                    "$ref": "#/components/schemas/PaymentAccount"
+                },
+                "type": "array"
+            },
+            "Problem": {
+                "properties": {
+                    "detail": {
+                        "example": "The provider could not be found.",
+                        "type": "string"
+                    },
+                    "instance": {
+                        "example": "http://example.com/providers/5000",
+                        "format": "uri",
+                        "type": "string"
+                    },
+                    "parameters": {
+                        "additionalProperties": {
+                            "type": "object"
+                        },
+                        "type": "object"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/StatusType"
+                    },
+                    "title": {
+                        "example": "Not found",
+                        "type": "string"
+                    },
+                    "type": {
+                        "example": "https://carepay.com/problems/help",
+                        "format": "uri",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Provider": {
+                "example": {
+                    "businessType": "BRANCH",
+                    "city": "Amsterdam",
+                    "classification": "tier 1",
+                    "country": "NL",
+                    "emailAddress": "provider@provider.com",
+                    "externalCodes": [
+                        {
+                            "code": "generatedinternalcode123",
+                            "systemCode": "systemcode1234",
+                            "systemIdentifier": "E-CLAIMLINK"
+                        }
+                    ],
+                    "geolocationLevelTwoCode": "test",
+                    "inheritFinancialDetails": false,
+                    "latitude": 27,
+                    "longitude": 25,
+                    "name": "St Paul's",
+                    "operatingHours": [
+                        {
+                            "closingTime": 1260,
+                            "dayOfTheWeek": 1,
+                            "openingTime": "08:00"
+                        },
+                        {
+                            "closingTime": 1260,
+                            "dayOfTheWeek": 2,
+                            "openingTime": "08:00"
+                        }
+                    ],
+                    "ownership": "PRIVATE",
+                    "parentProviderCode": "test",
+                    "phoneNumber": "ext01234112",
+                    "physicalAddress": "somewhere",
+                    "progressPercentage": 100,
+                    "providerCode": "test",
+                    "registrationCode": "test",
+                    "service": [
+                        "OUTPATIENT"
+                    ],
+                    "speciality": [
+                        "PHYSIOTHERAPY"
+                    ],
+                    "status": "ACTIVE",
+                    "type": "CLINIC",
+                    "website": "www.provider.com",
+                    "zipCode": "1012 RJ"
+                },
+                "properties": {
+                    "businessType": {
+                        "$ref": "#/components/schemas/ProviderBusinessType"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "classification": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "emailAddress": {
+                        "format": "email",
+                        "type": "string"
+                    },
+                    "externalCodes": {
+                        "$ref": "#/components/schemas/ProviderExternalCodes"
+                    },
+                    "geolocationLevelTwoCode": {
+                        "type": "string"
+                    },
+                    "inheritFinancialDetails": {
+                        "type": "boolean"
+                    },
+                    "latitude": {
+                        "format": "double",
+                        "type": "number"
+                    },
+                    "longitude": {
+                        "format": "double",
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "operatingHours": {
+                        "items": {
+                            "$ref": "#/components/schemas/OperatingHours"
+                        },
+                        "type": "array"
+                    },
+                    "ownership": {
+                        "$ref": "#/components/schemas/Ownership"
+                    },
+                    "parentProviderCode": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    },
+                    "physicalAddress": {
+                        "type": "string"
+                    },
+                    "progressPercentage": {
+                        "format": "int32",
+                        "maximum": 100,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "providerCode": {
+                        "type": "string"
+                    },
+                    "registrationCode": {
+                        "type": "string"
+                    },
+                    "service": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "speciality": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/ProviderStatus"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ProviderType"
+                    },
+                    "website": {
+                        "type": "string"
+                    },
+                    "zipCode": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderBusinessType": {
+                "default": "MAIN",
+                "enum": [
+                    "MAIN",
+                    "BRANCH"
+                ],
+                "type": "string"
+            },
+            "ProviderDocument": {
+                "example": {
+                    "documentType": "REGISTRATION_CERTIFICATE",
+                    "name": "documentName",
+                    "providerDocumentCode": "pd4310",
+                    "url": "locationOfDoc"
+                },
+                "properties": {
+                    "documentType": {
+                        "$ref": "#/components/schemas/ProviderDocumentType"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "providerDocumentCode": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderDocumentRequest": {
+                "properties": {
+                    "documentType": {
+                        "$ref": "#/components/schemas/ProviderDocumentType"
+                    },
+                    "fileName": {
+                        "format": "byte",
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderDocumentType": {
+                "enum": [
+                    "REGISTRATION_CERTIFICATE",
+                    "ACCREDITATION_CERTIFICATE"
+                ],
+                "type": "string"
+            },
+            "ProviderDocuments": {
+                "items": {
+                    "$ref": "#/components/schemas/ProviderDocument"
+                },
+                "type": "array"
+            },
+            "ProviderEmployee": {
+                "example": {
+                    "employeeCode": "em12341",
+                    "firstName": "Robert",
+                    "jobRole": "CLINICIAN",
+                    "lastName": "Jones",
+                    "speciality": "Surgery"
+                },
+                "properties": {
+                    "employeeCode": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "jobRole": {
+                        "$ref": "#/components/schemas/JobRole"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "speciality": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderEmployees": {
+                "items": {
+                    "$ref": "#/components/schemas/ProviderEmployee"
+                },
+                "type": "array"
+            },
+            "ProviderExternalCode": {
+                "properties": {
+                    "code": {
+                        "description": "Internal reference code (generated).",
+                        "example": "generatedinternalcode123",
+                        "type": "string"
+                    },
+                    "systemCode": {
+                        "description": "External provider code provided by system.",
+                        "example": "systemcode1234",
+                        "type": "string"
+                    },
+                    "systemIdentifier": {
+                        "description": "System that is providing the external provider code.",
+                        "example": "E-CLAIMLINK",
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderExternalCodeRequest": {
+                "properties": {
+                    "systemCode": {
+                        "description": "External provider code provided by system.",
+                        "example": "systemcode1234",
+                        "type": "string"
+                    },
+                    "systemIdentifier": {
+                        "description": "System that is providing the external code.",
+                        "example": "E-CLAIMLINK",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "systemIdentifier",
+                    "systemCode"
+                ]
+            },
+            "ProviderExternalCodes": {
+                "items": {
+                    "$ref": "#/components/schemas/ProviderExternalCode"
+                },
+                "type": "array"
+            },
+            "ProviderLicense": {
+                "example": {
+                    "dateOfRegistration": "2022-06-21T00:00:00Z",
+                    "issuingAuthority": "DHA",
+                    "licenseNumber": "license12345",
+                    "providerCode": "provider1234",
+                    "registeredName": "example license",
+                    "type": "REGULATORY",
+                    "validFrom": "2022-07-21T00:00:00Z",
+                    "validTo": "2030-07-21T00:00:00Z"
+                },
+                "properties": {
+                    "dateOfRegistration": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "issuingAuthority": {
+                        "$ref": "#/components/schemas/IssuingAuthority"
+                    },
+                    "licenseNumber": {
+                        "type": "string"
+                    },
+                    "providerCode": {
+                        "type": "string"
+                    },
+                    "registeredName": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ProviderLicenseType"
+                    },
+                    "validFrom": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "validTo": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderLicenseCreateRequest": {
+                "example": {
+                    "dateOfRegistration": "2022-06-21T00:00:00Z",
+                    "issuingAuthority": "DHA",
+                    "licenseNumber": "license12345",
+                    "registeredName": "example license",
+                    "type": "REGULATORY",
+                    "validFrom": "2022-07-21T00:00:00Z",
+                    "validTo": "2030-07-21T00:00:00Z"
+                },
+                "properties": {
+                    "dateOfRegistration": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "issuingAuthority": {
+                        "$ref": "#/components/schemas/IssuingAuthority"
+                    },
+                    "licenseNumber": {
+                        "type": "string"
+                    },
+                    "registeredName": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ProviderLicenseType"
+                    },
+                    "validFrom": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "validTo": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "issuingAuthority",
+                    "licenseNumber",
+                    "registeredName",
+                    "type",
+                    "dateOfRegistration",
+                    "validFrom",
+                    "validTo"
+                ]
+            },
+            "ProviderLicenseFile": {
+                "example": {
+                    "fileName": "license_ABC1234.pdf"
+                },
+                "properties": {
+                    "fileName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProviderLicenseFiles": {
+                "items": {
+                    "$ref": "#/components/schemas/ProviderLicenseFile"
+                },
+                "type": "array"
+            },
+            "ProviderLicenseType": {
+                "enum": [
+                    "REGULATORY",
+                    "COMMERCIAL_OR_TRADE",
+                    "CERTIFICATE_OF_INCORPORATION",
+                    "AUDITED_FINANCIAL_STATEMENTS_ATTACHED"
+                ],
+                "type": "string"
+            },
+            "ProviderLicenseUpdateRequest": {
+                "example": {
+                    "dateOfRegistration": "2022-06-21T00:00:00Z",
+                    "registeredName": "example license",
+                    "validFrom": "2022-07-21T00:00:00Z",
+                    "validTo": "2030-07-21T00:00:00Z"
+                },
+                "properties": {
+                    "dateOfRegistration": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "registeredName": {
+                        "type": "string"
+                    },
+                    "validFrom": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "validTo": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "registeredName",
+                    "dateOfRegistration",
+                    "validFrom",
+                    "validTo"
+                ]
+            },
+            "ProviderLicenses": {
+                "items": {
+                    "$ref": "#/components/schemas/ProviderLicense"
+                },
+                "type": "array"
+            },
+            "ProviderRequest": {
+                "example": {
+                    "businessType": "MAIN",
+                    "city": "Amsterdam",
+                    "classification": "tier 1",
+                    "country": "NL",
+                    "emailAddress": "provider@provider.com",
+                    "externalProviderCodes": [
+                        {
+                            "serviceCode": "12345",
+                            "serviceIdentifier": "service"
+                        }
+                    ],
+                    "geolocationLevelTwoCode": "12345",
+                    "inheritFinancialDetails": false,
+                    "latitude": 27,
+                    "longitude": 25,
+                    "name": "St Paul's",
+                    "operatingHours": [
+                        {
+                            "closingTime": 1260,
+                            "dayOfTheWeek": 0,
+                            "openingTime": "08:00"
+                        },
+                        {
+                            "closingTime": 1260,
+                            "dayOfTheWeek": 1,
+                            "openingTime": "08:00"
+                        }
+                    ],
+                    "ownership": "GOVERNMENT",
+                    "parentProviderCode": "provider500",
+                    "phoneNumber": "ext01234112",
+                    "physicalAddress": "somewhere",
+                    "registrationCode": "reg5000",
+                    "service": [
+                        "OUTPATIENT"
+                    ],
+                    "speciality": [
+                        "PHYSIOTHERAPY"
+                    ],
+                    "type": "CLINIC",
+                    "website": "www.provider.com",
+                    "zipCode": "1012 RJ"
+                },
+                "properties": {
+                    "businessType": {
+                        "$ref": "#/components/schemas/ProviderBusinessType"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "classification": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "emailAddress": {
+                        "format": "email",
+                        "type": "string"
+                    },
+                    "geolocationLevelTwoCode": {
+                        "type": "string"
+                    },
+                    "inheritFinancialDetails": {
+                        "type": "boolean"
+                    },
+                    "latitude": {
+                        "format": "double",
+                        "maximum": 90,
+                        "minimum": -90,
+                        "type": "number"
+                    },
+                    "longitude": {
+                        "format": "double",
+                        "maximum": 180,
+                        "minimum": -180,
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "operatingHours": {
+                        "items": {
+                            "$ref": "#/components/schemas/OperatingHours"
+                        },
+                        "type": "array"
+                    },
+                    "ownership": {
+                        "$ref": "#/components/schemas/Ownership"
+                    },
+                    "parentProviderCode": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    },
+                    "physicalAddress": {
+                        "type": "string"
+                    },
+                    "registrationCode": {
+                        "type": "string"
+                    },
+                    "service": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "speciality": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ProviderType"
+                    },
+                    "website": {
+                        "type": "string"
+                    },
+                    "zipCode": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "ProviderStatus": {
+                "enum": [
+                    "UNDER_REGISTRATION",
+                    "ACTIVE"
+                ],
+                "type": "string"
+            },
+            "ProviderStatusRequest": {
+                "example": {
+                    "status": "ACTIVE"
+                },
+                "properties": {
+                    "status": {
+                        "$ref": "#/components/schemas/ProviderStatus"
+                    }
+                },
+                "type": "object"
+            },
+            "ProviderType": {
+                "default": "NONE",
+                "enum": [
+                    "NONE",
+                    "PRIMARY_HOSPITAL",
+                    "REFERRAL_HOSPITAL",
+                    "PHARMACY",
+                    "CLINIC",
+                    "NURSING_HOME",
+                    "DIAGNOSTIC_CENTRE",
+                    "DENTAL_CLINIC",
+                    "OPTICAL_CENTRE",
+                    "OTHER"
+                ],
+                "type": "string"
+            },
+            "Providers": {
+                "items": {
+                    "$ref": "#/components/schemas/Provider"
+                },
+                "type": "array"
+            },
+            "StatusType": {
+                "properties": {
+                    "reasonPhrase": {
+                        "example": "Not found",
+                        "type": "string"
+                    },
+                    "statusCode": {
+                        "example": 404,
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "bearerFormat": "JWT",
+                "scheme": "bearer",
+                "type": "http"
+            }
+        }
+    },
+    "info": {
+        "contact": {
+            "email": "providers@carepay.com",
+            "name": "Providers"
+        },
+        "description": "Creation and configuration of providers and employees.",
+        "title": "Provider Service API",
+        "version": "0.0.102"
+    },
+    "openapi": "3.0.3",
+    "paths": {
+        "/classifications": {
+            "get": {
+                "operationId": "getClassifications",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Classifications"
+                                }
+                            }
+                        },
+                        "description": "List of possible classifications."
+                    }
+                },
+                "summary": "List of all possible provider classifications.",
+                "tags": [
+                    "Classifications"
+                ]
+            },
+            "post": {
+                "operationId": "createClassification",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Classification"
+                            }
+                        }
+                    },
+                    "description": "The classification to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Classification"
+                                }
+                            }
+                        },
+                        "description": "Resource created successfully"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    }
+                },
+                "summary": "Create a classification.",
+                "tags": [
+                    "Classifications"
+                ]
+            }
+        },
+        "/countries": {
+            "get": {
+                "operationId": "getCountries",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/countryFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Countries"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of countries.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    }
+                },
+                "summary": "Paginated list of supported countries.",
+                "tags": [
+                    "Geolocation"
+                ],
+                "x-accepts": "application/json"
+            }
+        },
+        "/countries/{countryCode}/geolocation-level-ones": {
+            "get": {
+                "operationId": "getCountryGeolocationLevelOnes",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/countryCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/geolocationFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeolocationLevelOnes"
+                                }
+                            }
+                        },
+                        "description": "geolocation level ones linked to the given country code.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "country not found"
+                    }
+                },
+                "summary": "Paginated list of geolocation level ones for a given country.",
+                "tags": [
+                    "Geolocation"
+                ]
+            }
+        },
+        "/employees": {
+            "get": {
+                "operationId": "getEmployees",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employees"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of employees.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    }
+                },
+                "summary": "Paginated list of employees.",
+                "tags": [
+                    "Employees"
+                ]
+            }
+        },
+        "/employees/specialities": {
+            "get": {
+                "operationId": "getEmployeeSpecialities",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeSpecialitiesFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeSpecialities"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of employee specialities.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    }
+                },
+                "summary": "Paginated list of employee specialities.",
+                "tags": [
+                    "EmployeeSpecialities"
+                ]
+            },
+            "post": {
+                "operationId": "createEmployeeSpeciality",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmployeeSpeciality"
+                            }
+                        }
+                    },
+                    "description": "The employee speciality to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeSpeciality"
+                                }
+                            }
+                        },
+                        "description": "Resource created successfully"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Conflict."
+                    }
+                },
+                "summary": "Create an employee speciality.",
+                "tags": [
+                    "EmployeeSpecialities"
+                ]
+            }
+        },
+        "/employees/specialities/{employeeSpecialityCode}": {
+            "delete": {
+                "operationId": "removeEmployeeSpeciality",
+                "parameters": [
+                    {
+                        "description": "The natural key of the employee speciality",
+                        "in": "path",
+                        "name": "employeeSpecialityCode",
+                        "required": true,
+                        "schema": {
+                            "example": "CON-C",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee speciality not found."
+                    }
+                },
+                "summary": "Delete an employee speciality.",
+                "tags": [
+                    "EmployeeSpecialities"
+                ]
+            }
+        },
+        "/employees/{employeeCode}": {
+            "delete": {
+                "operationId": "removeEmployee",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee not found."
+                    }
+                },
+                "summary": "Soft delete an employee.",
+                "tags": [
+                    "Employees"
+                ]
+            },
+            "get": {
+                "operationId": "getEmployee",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                }
+                            }
+                        },
+                        "description": "Employee matching the given employeeCode."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee not found."
+                    }
+                },
+                "summary": "Information regarding an employee.",
+                "tags": [
+                    "Employees"
+                ]
+            },
+            "put": {
+                "operationId": "updateEmployee",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmployeeUpdateRequest"
+                            }
+                        }
+                    },
+                    "description": "The employee information to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of change."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee not found."
+                    }
+                },
+                "summary": "Update employee information.",
+                "tags": [
+                    "Employees"
+                ]
+            }
+        },
+        "/employees/{employeeCode}/licenses": {
+            "get": {
+                "operationId": "getEmployeeLicenses",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeLicenseFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeLicenses"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of employee licenses for a given employee.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee not found."
+                    }
+                },
+                "summary": "Licenses for a particular employee.",
+                "tags": [
+                    "Employees Licenses"
+                ]
+            },
+            "post": {
+                "operationId": "createEmployeeLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmployeeLicenseRequest"
+                            }
+                        }
+                    },
+                    "description": "The license to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeLicense"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/licenses/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee not found."
+                    }
+                },
+                "summary": "Create a license and link to an employee.",
+                "tags": [
+                    "Employees Licenses"
+                ]
+            }
+        },
+        "/employees/{employeeCode}/licenses/{employeeLicenseNumber}": {
+            "delete": {
+                "operationId": "removeEmployeeLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeLicenseNumber"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee or license not found."
+                    }
+                },
+                "summary": "Soft delete an employee license.",
+                "tags": [
+                    "Employees Licenses"
+                ]
+            },
+            "get": {
+                "operationId": "getEmployeeLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeLicenseNumber"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeLicense"
+                                }
+                            }
+                        },
+                        "description": "Employee license matching the given licenseId."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee or License not found."
+                    }
+                },
+                "summary": "Information regarding an employee's license.",
+                "tags": [
+                    "Employees Licenses"
+                ]
+            },
+            "put": {
+                "operationId": "updateEmployeeLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeLicenseNumber"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmployeeLicenseRequest"
+                            }
+                        }
+                    },
+                    "description": "The employee license to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmployeeLicense"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of change."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee or License not found."
+                    }
+                },
+                "summary": "Update an employee license.",
+                "tags": [
+                    "Employees Licenses"
+                ]
+            }
+        },
+        "/employees/{jobRole}/file-template": {
+            "get": {
+                "operationId": "getEmployeeFileTemplateUrl",
+                "parameters": [
+                    {
+                        "description": "The job role of the required employee file template.",
+                        "in": "path",
+                        "name": "jobRole",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/JobRole"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DownloadUrl"
+                                }
+                            }
+                        },
+                        "description": "Provides the file template URL and name of the file."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "File template not found for provided job role."
+                    }
+                },
+                "summary": "Get the file template download URL used for the employee file upload.",
+                "tags": [
+                    "Employees"
+                ]
+            }
+        },
+        "/geolocation-level-ones": {
+            "get": {
+                "operationId": "getGeolocationLevelOnes",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/geolocationFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeolocationLevelOnes"
+                                }
+                            }
+                        },
+                        "description": "List of geolocation level ones.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    }
+                },
+                "summary": "Paginated list of geolocation levels.",
+                "tags": [
+                    "Geolocation"
+                ]
+            }
+        },
+        "/geolocation-level-ones/{levelOneCode}/geolocation-level-twos": {
+            "get": {
+                "operationId": "getGeolocationLevelOneGeolocationLevelTwos",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/levelOneCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/geolocationFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeolocationLevelTwos"
+                                }
+                            }
+                        },
+                        "description": "geolocation level twos linked to the given level one geolocation.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "geolocation level one not found"
+                    }
+                },
+                "summary": "Paginated list of level two geolocation for a given level one geolocation",
+                "tags": [
+                    "Geolocation"
+                ]
+            }
+        },
+        "/geolocation-level-twos": {
+            "get": {
+                "operationId": "getGeolocationLevelTwos",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/geolocationFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GeolocationLevelTwos"
+                                }
+                            }
+                        },
+                        "description": "List of geolocation level twos.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    }
+                },
+                "summary": "Paginated list of level two geolocation",
+                "tags": [
+                    "Geolocation"
+                ]
+            }
+        },
+        "/geolocation-level-twos/{levelTwoCode}": {
+            "get": {
+                "operationId": "getGeolocationLevelTwo",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/levelTwoCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Geolocation"
+                                }
+                            }
+                        },
+                        "description": "geolocation matching the given code."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "geolocation not found"
+                    }
+                },
+                "summary": "Complete geographical structure for a given level two geolocation",
+                "tags": [
+                    "Geolocation"
+                ]
+            }
+        },
+        "/providers": {
+            "get": {
+                "operationId": "getProviders",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerFilter"
+                    }
+                ],
+                "x-security": {
+                    "roles": [
+                        "PROVIDER", "PAYER"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "providerCodes",
+                            "in": "query",
+                            "resource": "provider",
+                            "permission": "view"
+                        }
+                    ]
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Providers"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of providers.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    }
+                },
+                "summary": "Paginated list of providers.",
+                "tags": [
+                    "Provider"
+                ],
+                "x-accepts": "application/json"
+            },
+            "post": {
+                "operationId": "createProvider",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Provider"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    }
+                },
+                "summary": "Create a provider.",
+                "tags": [
+                    "Provider"
+                ]
+            }
+        },
+        "/providers/{providerCode}": {
+            "delete": {
+                "operationId": "removeProvider",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Soft delete a provider.",
+                "tags": [
+                    "Provider"
+                ]
+            },
+            "get": {
+                "operationId": "getProviderById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Provider"
+                                }
+                            }
+                        },
+                        "description": "Provider matching the given Id."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found"
+                    }
+                },
+                "summary": "Info for a provider",
+                "tags": [
+                    "Provider"
+                ]
+            },
+            "patch": {
+                "operationId": "patchProvider",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderStatusRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider status update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Provider"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Change provider status.",
+                "tags": [
+                    "Provider"
+                ]
+            },
+            "put": {
+                "operationId": "updateProvider",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider details to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Provider"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Update a provider.",
+                "tags": [
+                    "Provider"
+                ]
+            }
+        },
+        "/providers/{providerCode}/beds": {
+            "get": {
+                "operationId": "getProviderBeds",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/bedFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Beds"
+                                }
+                            }
+                        },
+                        "description": "Beds for a given provider."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Bed Capacity for a particular provider.",
+                "tags": [
+                    "Bed Capacity"
+                ]
+            },
+            "post": {
+                "operationId": "createProviderBedCapacity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BedRequest"
+                            }
+                        }
+                    },
+                    "description": "The bed capacity to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Bed"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/beds/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Create bed capacity and link to provider.",
+                "tags": [
+                    "Bed Capacity"
+                ]
+            }
+        },
+        "/providers/{providerCode}/beds/{bedCode}": {
+            "delete": {
+                "operationId": "removeProviderBed",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/bedCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Bed or Provider not found."
+                    }
+                },
+                "summary": "Soft delete a provider bed.",
+                "tags": [
+                    "Bed Capacity"
+                ]
+            },
+            "get": {
+                "operationId": "getProviderBed",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/bedCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Bed"
+                                }
+                            }
+                        },
+                        "description": "Bed matching the given bedCode."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Bed or Provider not found."
+                    }
+                },
+                "summary": "Information regarding a bed.",
+                "tags": [
+                    "Bed Capacity"
+                ]
+            },
+            "put": {
+                "operationId": "updateProviderBed",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/bedCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BedRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider bed details to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Bed"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Bed or Provider not found."
+                    }
+                },
+                "summary": "Update bed capacity information.",
+                "tags": [
+                    "Bed Capacity"
+                ]
+            }
+        },
+        "/providers/{providerCode}/contacts": {
+            "get": {
+                "operationId": "getContacts",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contacts"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of contacts for a given provider.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Contacts for a particular provider.",
+                "tags": [
+                    "Contacts"
+                ]
+            },
+            "post": {
+                "operationId": "createContact",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactRequest"
+                            }
+                        }
+                    },
+                    "description": "The payment account to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/contact-details/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request Invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Create new contact and link to provider.",
+                "tags": [
+                    "Contacts"
+                ]
+            }
+        },
+        "/providers/{providerCode}/contacts/{contactCode}": {
+            "delete": {
+                "operationId": "removeContact",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Contact or Provider not found."
+                    }
+                },
+                "summary": "Soft delete a particular contact.",
+                "tags": [
+                    "Contacts"
+                ]
+            },
+            "get": {
+                "operationId": "getContact",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        },
+                        "description": "Contact matching the given contactCode."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Contact or Provider not found."
+                    }
+                },
+                "summary": "Information regarding a contact.",
+                "tags": [
+                    "Contacts"
+                ]
+            },
+            "put": {
+                "operationId": "updateContact",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactRequest"
+                            }
+                        }
+                    },
+                    "description": "The contact to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Contact or Provider not found."
+                    }
+                },
+                "summary": "Update a particular contact.",
+                "tags": [
+                    "Contacts"
+                ]
+            }
+        },
+        "/providers/{providerCode}/documents": {
+            "get": {
+                "operationId": "getProviderDocuments",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerDocumentFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderDocuments"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of documents for a given provider.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Documents for a given provider.",
+                "tags": [
+                    "Provider Documents"
+                ]
+            },
+            "post": {
+                "operationId": "createProviderDocument",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderDocumentRequest"
+                            }
+                        }
+                    },
+                    "description": "The document to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderDocument"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/documents/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Create new provider document and link to provider.",
+                "tags": [
+                    "Provider Documents"
+                ]
+            }
+        },
+        "/providers/{providerCode}/documents/{providerDocumentCode}": {
+            "delete": {
+                "operationId": "removeProviderDocument",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerDocumentCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider document or Provider not found."
+                    }
+                },
+                "summary": "Soft delete a provider document.",
+                "tags": [
+                    "Provider Documents"
+                ]
+            },
+            "get": {
+                "operationId": "getProviderDocument",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerDocumentCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderDocument"
+                                }
+                            }
+                        },
+                        "description": "Document matching the given documentId."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider document or Provider not found."
+                    }
+                },
+                "summary": "Information regarding a document.",
+                "tags": [
+                    "Provider Documents"
+                ]
+            },
+            "put": {
+                "operationId": "updateProviderDocument",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerDocumentCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderDocumentRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider document details to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderDocument"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider document or Provider not found."
+                    }
+                },
+                "summary": "Update a provider document.",
+                "tags": [
+                    "Provider Documents"
+                ]
+            }
+        },
+        "/providers/{providerCode}/employees": {
+            "get": {
+                "operationId": "getProviderEmployees",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderEmployees"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of employees give a particular provider.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Paginated list of employees for a particular provider.",
+                "tags": [
+                    "Employees"
+                ],
+                "x-accepts": "application/json"
+            },
+            "post": {
+                "operationId": "createProviderEmployee",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmployeeCreateRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/employees/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Create an employee for a particular provider.",
+                "tags": [
+                    "Employees"
+                ]
+            }
+        },
+        "/providers/{providerCode}/employees/upload-file": {
+            "post": {
+                "operationId": "uploadEmployeesFile",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "encoding": {
+                                "file": {
+                                    "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, text/csv"
+                                }
+                            },
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "format": "binary",
+                                        "type": "string"
+                                    },
+                                    "jobRole": {
+                                        "$ref": "#/components/schemas/JobRole"
+                                    }
+                                },
+                                "required": [
+                                    "jobRole",
+                                    "file"
+                                ],
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success if file was successfully uploaded & processed."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Upload an Excel file (CSV, XLS, XLSX) with a list of clinicians and their license for a particular provider.",
+                "tags": [
+                    "Employees"
+                ]
+            }
+        },
+        "/providers/{providerCode}/employees/{employeeCode}": {
+            "delete": {
+                "operationId": "removeEmployeeFromProvider",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Employee or Provider not found."
+                    }
+                },
+                "summary": "Remove an existing employee to a particular provider.",
+                "tags": [
+                    "Employees"
+                ]
+            },
+            "put": {
+                "operationId": "linkEmployeeToProvider",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/employeeCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of change."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider or Employee not found."
+                    }
+                },
+                "summary": "Link an existing employee to a particular provider.",
+                "tags": [
+                    "Employees"
+                ]
+            }
+        },
+        "/providers/{providerCode}/external-codes": {
+            "post": {
+                "operationId": "createProviderExternalCode",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderExternalCodeRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider external code to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderExternalCode"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/external-codes/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "System code already in use for system identifier."
+                    }
+                },
+                "summary": "Create new external code for a provider.",
+                "tags": [
+                    "Provider External Codes"
+                ]
+            }
+        },
+        "/providers/{providerCode}/licenses": {
+            "get": {
+                "operationId": "getProviderLicenses",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerLicenseFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderLicenses"
+                                }
+                            }
+                        },
+                        "description": "Paginated list of licenses for a given provider.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Licenses for a particular provider.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            },
+            "post": {
+                "operationId": "createProviderLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderLicenseCreateRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider license to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderLicense"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/licenses/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Create new provider license and link to provider.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            }
+        },
+        "/providers/{providerCode}/licenses/{providerLicenseNumber}": {
+            "delete": {
+                "operationId": "removeProviderLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerLicenseNumber"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider License or Provider not found."
+                    }
+                },
+                "summary": "Soft delete a provider license.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            },
+            "get": {
+                "operationId": "getProviderLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerLicenseNumber"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderLicense"
+                                }
+                            }
+                        },
+                        "description": "License matching the given licenseId."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider License or Provider not found."
+                    }
+                },
+                "summary": "Information regarding a license.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            },
+            "put": {
+                "operationId": "updateProviderLicense",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerLicenseNumber"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProviderLicenseUpdateRequest"
+                            }
+                        }
+                    },
+                    "description": "The provider license details to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderLicense"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider License or Provider not found."
+                    }
+                },
+                "summary": "Update a provider license.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            }
+        },
+        "/providers/{providerCode}/licenses/{providerLicenseNumber}/files": {
+            "get": {
+                "operationId": "getProviderLicenseFileMetaData",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerLicenseNumber"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderLicenseFiles"
+                                }
+                            }
+                        },
+                        "description": "Metadata of the provider license documents."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider or provider license not found."
+                    }
+                },
+                "summary": "Get metadata of attached documents of a provider license.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            },
+            "post": {
+                "operationId": "uploadProviderLicenseFile",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/providerLicenseNumber"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "encoding": {
+                                "file": {
+                                    "contentType": "application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                }
+                            },
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "format": "binary",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "file"
+                                ],
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProviderLicenseFile"
+                                }
+                            }
+                        },
+                        "description": "Metadata of the uploaded provider license document."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Invalid Request."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider or provider license not found."
+                    }
+                },
+                "summary": "Upload a file (Word, PDF) as an attached document to a provider license.",
+                "tags": [
+                    "Provider Licenses"
+                ]
+            }
+        },
+        "/providers/{providerCode}/payment-accounts": {
+            "get": {
+                "operationId": "getProviderPaymentAccounts",
+                "parameters": [
+                    {
+                        "description": "The natural key of the provider",
+                        "in": "path",
+                        "name": "providerCode",
+                        "required": true,
+                        "schema": {
+                            "example": "provider1234",
+                            "type": "string"
+                        },
+                        "x-security": {
+                            "resource": "provider",
+                            "permission": "view"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/paginationParameters"
+                    },
+                    {
+                        "$ref": "#/components/parameters/paymentAccountFilter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaymentAccounts"
+                                }
+                            }
+                        },
+                        "description": "Payment accounts for a given provider.",
+                        "headers": {
+                            "X-Has-Next-Page": {
+                                "$ref": "#/components/headers/X-Has-Next-Page"
+                            },
+                            "X-Page": {
+                                "$ref": "#/components/headers/X-Page"
+                            },
+                            "X-Size": {
+                                "$ref": "#/components/headers/X-Size"
+                            },
+                            "X-Total-Count": {
+                                "$ref": "#/components/headers/X-Total-Count"
+                            },
+                            "X-Total-Pages": {
+                                "$ref": "#/components/headers/X-Total-Pages"
+                            }
+                        }
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Payment accounts for a particular provider.",
+                "tags": [
+                    "Payment Accounts"
+                ]
+            },
+            "post": {
+                "operationId": "createPaymentAccount",
+                "x-security": {
+                    "roles": [
+                        "admin"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "providerCode",
+                            "resource": "provider",
+                            "permission": "manage"
+                        }
+                    ]
+                },
+                "parameters": [
+                    {
+                        "description": "The natural key of the provider",
+                        "in": "path",
+                        "name": "providerCode",
+                        "required": true,
+                        "schema": {
+                            "example": "provider1234",
+                            "type": "string"
+                        },
+                        "x-permission": "manage",
+                        "x-type": "provider"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaymentAccountRequest"
+                            }
+                        }
+                    },
+                    "description": "The payment account to create.",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaymentAccount"
+                                }
+                            }
+                        },
+                        "description": "Created response with location of newly created resource.",
+                        "headers": {
+                            "Location": {
+                                "description": "Relative path to resource",
+                                "schema": {
+                                    "example": "/providers/38921/payment-accounts/12345",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Provider not found."
+                    }
+                },
+                "summary": "Create payment account and link to provider.",
+                "tags": [
+                    "Payment Accounts"
+                ]
+            }
+        },
+        "/providers/{providerCode}/payment-accounts/{accountCode}": {
+            "delete": {
+                "operationId": "removePaymentAccount",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/accountCode"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of removal"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Payment account or Provider not found."
+                    }
+                },
+                "summary": "Soft delete payment account.",
+                "tags": [
+                    "Payment Accounts"
+                ]
+            },
+            "get": {
+                "operationId": "getProviderPaymentAccount",
+                "x-security": {
+                    "parameters": [
+                        {
+                            "name": "providerCode",
+                            "in": "path",
+                            "resource": "provider",
+                            "permission": "view"
+                        },
+                        {
+                            "name": "accountCode",
+                            "in": "path",
+                            "resource": "account",
+                            "permission": "view"
+                        }
+                    ]
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/accountCode"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaymentAccount"
+                                }
+                            }
+                        },
+                        "description": "Payment account matching the given accountCode."
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Payment account or Provider not found"
+                    }
+                },
+                "summary": "Information regarding a payment account.",
+                "tags": [
+                    "Payment Accounts"
+                ]
+            },
+            "put": {
+                "operationId": "updatePaymentAccount",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/providerCode"
+                    },
+                    {
+                        "$ref": "#/components/parameters/accountCode"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaymentAccountRequest"
+                            }
+                        }
+                    },
+                    "description": "The payment account details to update.",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaymentAccount"
+                                }
+                            }
+                        },
+                        "description": "Confirmation of edit"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Request invalid"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        },
+                        "description": "Payment account or Provider not found."
+                    }
+                },
+                "summary": "Update a payment account.",
+                "tags": [
+                    "Payment Accounts"
+                ]
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8080/api/v3/provider"
+        },
+        {
+            "description": "AE Test",
+            "url": "https://api.ae-test.carepay.dev/api/provider/"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Bed Capacity"
+        },
+        {
+            "name": "Classifications"
+        },
+        {
+            "name": "Contacts"
+        },
+        {
+            "name": "Employees"
+        },
+        {
+            "name": "Employees Licenses"
+        },
+        {
+            "name": "Geolocation"
+        },
+        {
+            "name": "Payment Accounts"
+        },
+        {
+            "name": "Provider"
+        },
+        {
+            "name": "Provider Documents"
+        },
+        {
+            "name": "Provider Licenses"
+        },
+        {
+            "name": "Provider External Codes"
+        }
+    ],
+    "x-tyk-api-gateway": {
+        "info": {
+            "id": "provider-setup",
+            "name": "Provider Setup",
+            "state": {
+                "active": true
+            }
+        },
+        "upstream": {
+            "url": "http://provider.default.svc.cluster.local:80"
+        },
+        "server": {
+            "listenPath": {
+                "value": "/api/v3/provider",
+                "strip": true
+            }
+        }
+    }
+}
